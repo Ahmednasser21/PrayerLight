@@ -14,4 +14,21 @@
     <string name="location_settings">Location Settings</string>
     <string name="previous">Previous</string>
     <string name="automatic_location">Automatic Location</string>
+    <string name="alarm_settings">Alarm Settings</string>
+    <string name="fajr">Fajr</string>
+    <string name="sun_rise">SunRise</string>
+    <string name="zohr">Zohr</string>
+    <string name="asr">Asr</string>
+    <string name="maghrib">Maghrib</string>
+    <string name="eshaa">Eshaa</string>
+    <string name="quiam_lil">Quiam Lil</string>
+    <string name="fajr_alarm">Enable or disable Fajr alarm</string>
+    <string name="sunrise_alarm">Enable or disable Sunrise alarm</string>
+    <string name="zohr_alarm">Enable or disable Zohr alarm</string>
+    <string name="asr_alarm">Enable or disable Asr alarm</string>
+    <string name="maghrib_alarm">Enable or disable Maqhrib alarm</string>
+    <string name="eshaa_alarm">Enable or disable Eshaa alarm</string>
+    <string name="quiam_lil_alarm">Enable or disable Quiam lil alarm</string>
+
+
 </resources>
