@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Prayer Light</string>
+    <string name="chose_language">Please chose language</string>
+    <string name="arabic" translatable="false">العربية</string>
+    <string name="english">English</string>
+    <string name="french" translatable="false">Française</string>
+    <string name="turkish" translatable="false">Türkçe</string>
+    <string name="indonesia" translatable="false">Indonesia</string>
+    <string name="urdo">اردو</string>
+    <string name="conditions">In order to use Prayer light App, you must agree to the terms and conditions.</string>
+    <string name="checkBox">Agree</string>
+    <string name="terms_and_conditions">Terms and conditions</string>
+    <string name="next">Next</string>
+    <string name="location_settings">Location Settings</string>
+    <string name="previous">Previous</string>
+    <string name="automatic_location">Automatic Location</string>
+</resources>
