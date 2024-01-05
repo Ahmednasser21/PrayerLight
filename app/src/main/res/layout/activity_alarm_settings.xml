@@ -138,7 +138,7 @@
      </LinearLayout>
     </ScrollView>
     <Button
-        android:id="@+id/next"
+        android:id="@+id/finish"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -146,12 +146,12 @@
         android:layout_margin="15dp"
         android:background="@drawable/button_background"
         android:fontFamily="@font/cairo"
-        android:text="@string/next"
+        android:text="@string/finish"
         android:textColor="@color/white"
         android:textSize="25sp"
         tools:ignore="TextSizeCheck" />
     <Button
-        android:id="@+id/back"
+        android:id="@+id/previous"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
