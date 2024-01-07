@@ -16,7 +16,7 @@ class LocationActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.previous.setOnClickListener{
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this,LanguageActivity::class.java)
             startActivity(intent)
         }
     }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/main"
-    tools:context=".MainActivity">
+    tools:context=".LanguageActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
