@@ -16,7 +16,7 @@
     <string name="automatic_location">Automatic Location</string>
     <string name="alarm_settings">Alarm Settings</string>
     <string name="fajr">Fajr</string>
-    <string name="sun_rise">SunRise</string>
+    <string name="sun_rise">Sunrise</string>
     <string name="zohr">Zohr</string>
     <string name="asr">Asr</string>
     <string name="maghrib">Maghrib</string>
@@ -32,6 +32,14 @@
     <string name="finish">Finish</string>
     <string name="settings">Settings</string>
     <string name="signin">SignIn</string>
+    <string name="pray_name">Pray Name</string>
+    <string name="pray_time">Pray Time</string>
+    <string name="countdown">Countdown</string>
+    <string name="location">location</string>
+    <string name="location_text">Location Text</string>
+    <string name="hijri_calender">Hijri Calender</string>
+    <string name="birth_calender">Birth Calender</string>
+    <string name="time">time</string>
 
 
 </resources>

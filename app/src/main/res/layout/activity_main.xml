@@ -13,4 +13,157 @@
         android:contentDescription="@string/app_name"
         android:scaleX="1.55"
         android:src="@mipmap/backmain_foreground" />
+
+    <TextView
+        android:id="@+id/pray_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:fontFamily="@font/cairo"
+        android:text="@string/pray_name"
+        android:textColor="@color/white"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/pray_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pray_time"
+        android:layout_below="@+id/pray_name"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:fontFamily="@font/cairo_bold"
+        android:textSize="30sp"/>
+    <TextView
+        android:id="@+id/countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/countdown"
+        android:layout_below="@+id/pray_time"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:fontFamily="@font/cairo"
+        android:textSize="25sp"/>
+
+    <ImageView
+        android:id="@+id/location_icon"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/countdown"
+        android:contentDescription="@string/location"
+        android:src="@drawable/baseline_location_on_24" />
+
+    <TextView
+        android:id="@+id/location_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/countdown"
+        android:layout_alignStart="@+id/location_icon"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/location_text"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/location_text"
+        android:background="@drawable/main_back"
+        android:layout_marginTop="2dp">
+        <TextView
+            android:id="@+id/higri_calender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hijri_calender"
+            android:textSize="25sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/birth_calender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/higri_calender"
+            android:text="@string/birth_calender"
+            android:textSize="20sp"
+            android:textColor="#C1000000"/>
+        <TextView
+            android:id="@+id/sunrise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sun_rise"
+           android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:textSize="25sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/sunrise_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/sunrise"
+            android:layout_marginEnd="10dp"
+            android:textSize="25sp"
+            android:textColor="@color/black" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/sun_rise"
+            android:src="@drawable/baseline_sunny_24"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="110dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relative"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/main_back2">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fajr"
+            android:textSize="30sp"
+            android:textColor="@color/black"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/zohr"
+                android:textSize="30sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/asr"
+                android:textSize="30sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/maghrib"
+                android:textSize="30sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/eshaa"
+                android:textSize="30sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="15dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 </RelativeLayout>
