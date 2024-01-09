@@ -1,8 +1,8 @@
  package com.demo1.prayerlight
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.demo1.prayerlight.databinding.ActivityAlarmSettingsBinding
 
  class AlarmSettings : AppCompatActivity() {
@@ -13,6 +13,10 @@ import com.demo1.prayerlight.databinding.ActivityAlarmSettingsBinding
         setContentView(binding.root)
         binding.previous.setOnClickListener{
             val intent = Intent (this , LocationActivity::class.java)
+            startActivity(intent)
+        }
+        binding.finish.setOnClickListener{
+            val intent = Intent(this , MainActivity::class.java)
             startActivity(intent)
         }
     }

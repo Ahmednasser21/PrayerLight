@@ -1,9 +1,26 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.PrayerLight" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="Theme.PrayerLight.once" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:statusBarColor"> @color/second</item>
         <item name="android:navigationBarColor">@color/second</item>
     </style>
 
-    <style name="Theme.PrayerLight" parent="Base.Theme.PrayerLight" />
+    <style name="Theme.PrayerLight" parent="Theme.AppCompat.Light" >
+        <item name="android:statusBarColor">@color/second</item>
+        <item name="android:colorPrimary">@color/second</item>
+        <item name="android:colorSecondary">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/black</item>
+        <item name="actionBarStyle">@style/MyActionBarTheme</item>
+        <item name="windowActionBarOverlay"> true</item>
+        <item name="android:navigationBarColor">@color/second</item>
+    </style>
+
+    <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="logo">@mipmap/round_icon__round</item>
+        <item name="android:icon">@mipmap/round_icon__round</item>
+        <item name="displayOptions">useLogo|showHome|showTitle</item>
+        <item name="background">@drawable/actionbar</item>
+
+    </style>
 </resources>
