@@ -13,6 +13,7 @@
         <item name="actionBarStyle">@style/MyActionBarTheme</item>
         <item name="windowActionBarOverlay"> true</item>
         <item name="android:navigationBarColor">@color/second</item>
+        <item name="android:popupBackground">@color/black</item>
     </style>
 
     <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.ActionBar">

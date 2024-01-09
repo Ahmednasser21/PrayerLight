@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/actionbar_menu">
+
+    <ImageView
+        android:id="@+id/acc"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:contentDescription="@string/signin"
+        android:src="@drawable/baseline_account_circle_24"
+        android:layout_marginStart="1dp"
+        tools:ignore="ImageContrastCheck">
+
+    </ImageView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/acc"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="26dp"
+        android:text="@string/signin"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="15sp"
+        tools:ignore="TextContrastCheck"
+        android:layout_marginEnd="3dp"/>
+
+
+</RelativeLayout>
