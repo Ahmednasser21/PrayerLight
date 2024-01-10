@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:contentDescription="@string/app_name"
-        android:scaleX="1.55"
+        android:scaleType="fitXY"
         android:src="@mipmap/backmain_foreground" />
 
     <TextView
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/location_text"
         android:background="@drawable/main_back"
-        android:layout_marginTop="2dp">
+        android:layout_marginTop="15dp">
         <TextView
             android:id="@+id/higri_calender"
             android:layout_width="wrap_content"
@@ -109,12 +109,12 @@
             android:textSize="25sp"
             android:textColor="@color/black" />
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/sun_rise"
-            android:src="@drawable/baseline_sunny_24"
+            android:src="@drawable/ic_sunrise"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="6dp"
             android:layout_marginEnd="110dp"/>
     </RelativeLayout>
     <RelativeLayout
@@ -124,44 +124,132 @@
         android:layout_marginTop="1dp"
         android:background="@drawable/main_back2">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/linear1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/fajr"
-            android:textSize="30sp"
+            android:textSize="35sp"
             android:textColor="@color/black"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/zohr"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 android:textColor="@color/black"
-                android:layout_marginStart="15dp"/>
+                android:layout_marginTop="15dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/asr"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 android:textColor="@color/black"
-                android:layout_marginStart="15dp"/>
+                android:layout_marginTop="15dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/maghrib"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 android:textColor="@color/black"
-                android:layout_marginStart="15dp"/>
+                android:layout_marginTop="15dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/eshaa"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 android:textColor="@color/black"
-                android:layout_marginStart="15dp"/>
+                android:layout_marginTop="15dp"/>
 
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linear2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/linear1"
+            android:orientation="vertical"
+            android:layout_marginStart="20dp">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/fajr"
+                android:src="@drawable/ic_fajr"
+                />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/zohr"
+                android:src="@drawable/baseline_sunny_24"
+                android:layout_marginTop="15dp"/>
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/asr"
+                android:src="@drawable/ic_asr"
+                android:layout_marginTop="10dp" />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/maghrib"
+                android:src="@drawable/ic_maghrib"
+                android:layout_marginTop="12dp" />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/eshaa"
+                android:src="@drawable/ic_esha"
+                android:layout_marginTop="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/linear2"
+            android:layout_marginStart="35dp">
+        <TextView
+            android:id="@+id/fajr_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fajr_time"
+            android:textSize="30sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/zohr_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/zohr_time"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="25dp"/>
+        <TextView
+            android:id="@+id/asr_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/asr_time"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="25dp"/>
+        <TextView
+            android:id="@+id/maghrib_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/maghrib_time"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="25dp"/>
+        <TextView
+            android:id="@+id/eshaa_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/eshaa_time"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="25dp"/>
         </LinearLayout>
 
     </RelativeLayout>

@@ -40,6 +40,11 @@
     <string name="hijri_calender">Hijri Calender</string>
     <string name="birth_calender">Birth Calender</string>
     <string name="time">time</string>
+    <string name="fajr_time">fajr_T</string>
+    <string name="zohr_time">zohr_T</string>
+    <string name="asr_time">asr_T</string>
+    <string name="maghrib_time">maghrib_T</string>
+    <string name="eshaa_time">eshaa_T</string>
 
 
 </resources>
