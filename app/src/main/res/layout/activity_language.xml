@@ -7,7 +7,8 @@
     tools:context=".LanguageActivity">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/main">
         <ImageView
             android:id="@+id/backI"
             android:layout_width="match_parent"

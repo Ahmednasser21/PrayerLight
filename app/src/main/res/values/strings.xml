@@ -45,11 +45,6 @@
     <string name="asr_time">asr_T</string>
     <string name="maghrib_time">maghrib_T</string>
     <string name="eshaa_time">eshaa_T</string>
-    <string name="home">Home</string>
-    <string name="azkar">Azkar</string>
-    <string name="pray">Pray Times</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
