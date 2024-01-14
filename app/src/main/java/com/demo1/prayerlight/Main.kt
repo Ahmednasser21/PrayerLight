@@ -92,7 +92,7 @@ class Main : Fragment(), LocationListener {
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
         val addresses: List<Address> = geocoder.getFromLocation(latitude, longitude, 1) as List<Address>
         val placeName = addresses[0].getAddressLine(0)
-        binding.locationText.text =placeName.toString()
+        binding.locationText.text =placeName
     }
 
     override fun onProviderEnabled(provider: String) {
