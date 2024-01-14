@@ -153,7 +153,7 @@
         android:fontFamily="@font/cairo"
         android:text="@string/next"
         android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textSize="25sp"/>
         <Button
             android:id="@+id/previous"
             android:layout_width="180dp"
