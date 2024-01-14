@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.demo1.prayerlight.databinding.ActivityMainBinding
 
 
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 //        =========== Handling Bottom nav view=================
         binding.viewerPager.adapter = PagerAdapter(this)
 
-        binding.bottomNavBar.setOnNavigationItemSelectedListener { item ->
+        binding.bottomNavBar.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.pray -> binding.viewerPager.currentItem = 0
                 R.id.home -> binding.viewerPager.currentItem = 1
@@ -35,7 +36,28 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavBar.selectedItemId = R.id.home
 
-//        =========== End of handling Tab layout =================
+//        ======= viewer pager handling to sync the label with swiping gesture======
+
+        binding.viewerPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+
+                when (position) {
+                    0 -> binding.bottomNavBar.selectedItemId = R.id.pray
+                    1 -> binding.bottomNavBar.selectedItemId = R.id.home
+                    2 -> binding.bottomNavBar.selectedItemId = R.id.azkar
+                }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+        })
+
+//        =========== End of handling Bottom nav view =================
     }
 //    ================ option menu =================================
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -49,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         }
 //    == End of handling sign in option ==
 
-            return super.onCreateOptionsMenu(menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
