@@ -10,13 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/viewer_pager"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:menu="@menu/bottom_nav_menu"
         android:background="@drawable/main_back2"
         app:itemIconTint="@color/second"
-        app:itemTextColor="@color/second"/>
+        app:itemTextColor="@color/second"
+        app:labelVisibilityMode="auto"
+        app:menu="@menu/bottom_nav_menu" />
+
+
 </FrameLayout>
