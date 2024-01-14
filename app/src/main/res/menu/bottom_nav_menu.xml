@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/pray"
+        android:icon="@drawable/ic_prayer"
+        android:title="@string/pray" />
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/outline_home_app_logo_24"
+        android:title="@string/home"/>
+    <item
+        android:id="@+id/azkar"
+        android:icon="@drawable/ic_prayer_beads"
+        android:title="@string/azkar" />
+</menu>

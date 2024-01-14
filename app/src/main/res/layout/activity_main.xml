@@ -10,35 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/viewer_pager"/>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/main_tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@drawable/main_back2"
-            app:tabMode="fixed"
-            style="@style/TabLayoutStyle">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pray"
-                android:icon="@drawable/ic_prayer"  />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/home"
-
-                android:icon="@drawable/outline_home_app_logo_24"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/azkar"
-                android:icon="@drawable/ic_prayer_beads"/>
-
-    </com.google.android.material.tabs.TabLayout>
-
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_menu"
+        android:background="@drawable/main_back2"
+        app:itemIconTint="@color/second"
+        app:itemTextColor="@color/second"
+        app:labelVisibilityMode="selected"/>
 </FrameLayout>

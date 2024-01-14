@@ -3,7 +3,8 @@ package com.demo1.prayerlight
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,8 +16,8 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import java.util.Locale
 
-var location:Location? = null
 class LocationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLocationBinding
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -31,8 +32,8 @@ class LocationActivity : AppCompatActivity() {
 
         binding.next.setOnClickListener{
             if (checkSelfPermission()){
-            val intent = Intent(this,AlarmSettings::class.java)
-            startActivity(intent)
+                val intent = Intent(this,AlarmSettings::class.java)
+                startActivity(intent)
             }else{
                 Toast.makeText(this,getString(R.string.location_permission_msg),Toast.LENGTH_LONG).show()
                 requestLocationPermission()
@@ -44,22 +45,34 @@ class LocationActivity : AppCompatActivity() {
         }
 //        ============ location ==============
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-         locationRequest = LocationRequest.Builder(1000L)
+        locationRequest = LocationRequest.Builder(1000L)
             .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
             .build()
         locationCallback = object : LocationCallback(){
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 val location = locationResult.lastLocation
+                val longitude = location?.longitude
+                val latitude = location?.latitude
             }
         }
 
-        location = Location("GPS")
 
 
         binding.location.setOnClickListener{
 
             startLocationUpdates()
+        }
+        val task = fusedLocationProviderClient.getCurrentLocation (locationRequest.priority, null)
+        task.addOnSuccessListener { location ->
+            if (location != null) {
+                val longitude = location.longitude
+                val latitude = location.latitude
+                val geocoder = Geocoder(this, Locale.getDefault())
+                val addresses: List<Address> = geocoder.getFromLocation(latitude, longitude, 1) as List<Address>
+                val placeName = addresses[0].getAddressLine(0)
+                binding.txt2.text = placeName.toString()
+            }
         }
     }
     override fun onResume () {
@@ -73,15 +86,15 @@ class LocationActivity : AppCompatActivity() {
 
         stopLocationUpdates ()
     }
-//    ========= location handling ===============
+    //    ========= location handling ===============
 //    ========= Request location permission =======
     private fun requestLocationPermission(){
         ActivityCompat.requestPermissions(this ,
-        arrayOf( Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION),
+            arrayOf( Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION),
             locationPermissionRequestCode)
     }
-//     ================= check permission ===========
+    //     ================= check permission ===========
     private fun checkSelfPermission():Boolean{
         return ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
@@ -90,14 +103,14 @@ class LocationActivity : AppCompatActivity() {
     }
 
     private fun startLocationUpdates() {
-            if (checkSelfPermission()) {
-                fusedLocationProviderClient.requestLocationUpdates (locationRequest, locationCallback, null)
+        if (checkSelfPermission()) {
+            fusedLocationProviderClient.requestLocationUpdates (locationRequest, locationCallback, null)
 
-            }else{
-                requestLocationPermission()
-            }
-
+        }else{
+            requestLocationPermission()
         }
+
+    }
     private fun stopLocationUpdates () {
         fusedLocationProviderClient.removeLocationUpdates (locationCallback)
     }
