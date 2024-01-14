@@ -12,11 +12,11 @@ import com.demo1.prayerlight.databinding.ActivityAlarmSettingsBinding
         binding= ActivityAlarmSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.previous.setOnClickListener{
-            val intent = Intent (this , LocationActivity::class.java)
+            val intent = Intent (this ,LanguageActivity::class.java )
             startActivity(intent)
         }
         binding.finish.setOnClickListener{
-            val intent = Intent(this , MainActivity::class.java)
+            val intent = Intent(this , LocationActivity::class.java)
             startActivity(intent)
         }
     }

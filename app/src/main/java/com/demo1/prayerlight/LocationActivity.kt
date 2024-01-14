@@ -3,8 +3,6 @@ package com.demo1.prayerlight
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +14,6 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import java.util.Locale
 
 class LocationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLocationBinding
@@ -24,24 +21,23 @@ class LocationActivity : AppCompatActivity() {
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private val locationPermissionRequestCode = 100
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.previous.setOnClickListener{
+            val intent = Intent(this,AlarmSettings::class.java)
+            startActivity(intent)
+        }
 
         binding.next.setOnClickListener{
             if (checkSelfPermission()){
-                val intent = Intent(this,AlarmSettings::class.java)
+                val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
             }else{
                 Toast.makeText(this,getString(R.string.location_permission_msg),Toast.LENGTH_LONG).show()
                 requestLocationPermission()
             }
-        }
-        binding.previous.setOnClickListener{
-            val intent = Intent(this,LanguageActivity::class.java)
-            startActivity(intent)
         }
 //        ============ location ==============
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
@@ -52,8 +48,6 @@ class LocationActivity : AppCompatActivity() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 val location = locationResult.lastLocation
-                val longitude = location?.longitude
-                val latitude = location?.latitude
             }
         }
 
@@ -63,17 +57,17 @@ class LocationActivity : AppCompatActivity() {
 
             startLocationUpdates()
         }
-        val task = fusedLocationProviderClient.getCurrentLocation (locationRequest.priority, null)
-        task.addOnSuccessListener { location ->
-            if (location != null) {
-                val longitude = location.longitude
-                val latitude = location.latitude
-                val geocoder = Geocoder(this, Locale.getDefault())
-                val addresses: List<Address> = geocoder.getFromLocation(latitude, longitude, 1) as List<Address>
-                val placeName = addresses[0].getAddressLine(0)
-                binding.txt2.text = placeName.toString()
-            }
-        }
+//        val task = fusedLocationProviderClient.getCurrentLocation (locationRequest.priority, null)
+//        task.addOnSuccessListener { location ->
+//            if (location != null) {
+//                val longitude = location.longitude
+//                val latitude = location.latitude
+//                val geocoder = Geocoder(this, Locale.getDefault())
+//                val addresses: List<Address> = geocoder.getFromLocation(latitude, longitude, 1) as List<Address>
+//                val placeName = addresses[0].getAddressLine(0)
+//                binding.txt2.text = placeName.toString()
+//            }
+//        }
     }
     override fun onResume () {
         super.onResume ()
