@@ -12,8 +12,8 @@ class PagerAdapter (fragmentActivity: FragmentActivity) : FragmentStateAdapter(f
     override fun createFragment(position: Int): Fragment {
         var fragment : Fragment?= null
         when (position){
-            0-> fragment = PrayerTimes()
-            1-> fragment = Main()
+            1-> fragment = PrayerTimes()
+            0-> fragment = Main()
             2-> fragment = Azkar()
         }
         return fragment!!

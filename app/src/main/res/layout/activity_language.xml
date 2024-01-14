@@ -182,7 +182,7 @@
 
         <Button
             android:id="@+id/next"
-            android:layout_width="180dp"
+            android:layout_width="181dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/checkbox"
