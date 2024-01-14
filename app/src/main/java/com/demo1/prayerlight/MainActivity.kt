@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        binding.bottomNavBar.selectedItemId = R.id.pray
+        binding.bottomNavBar.selectedItemId = R.id.home
 
 //        =========== End of handling Tab layout =================
     }

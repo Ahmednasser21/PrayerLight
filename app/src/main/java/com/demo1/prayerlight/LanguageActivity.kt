@@ -12,8 +12,8 @@ class LanguageActivity : AppCompatActivity() {
         binding = ActivityLanguageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.next.setOnClickListener{
-            val intentt = Intent(this, AlarmSettings::class.java)
-            startActivity(intentt)
+            val intent = Intent(this, AlarmSettings::class.java)
+            startActivity(intent)
         }
     }
 }

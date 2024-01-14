@@ -28,8 +28,8 @@ class LocationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.previous.setOnClickListener{
-            val intentt = Intent(this,AlarmSettings::class.java)
-            startActivity(intentt)
+            val intent = Intent(this,AlarmSettings::class.java)
+            startActivity(intent)
         }
         binding.next.setOnClickListener{
             if (checkSelfPermission()){

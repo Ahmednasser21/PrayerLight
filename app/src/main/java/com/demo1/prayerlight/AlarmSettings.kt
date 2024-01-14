@@ -16,8 +16,8 @@ import com.demo1.prayerlight.databinding.ActivityAlarmSettingsBinding
              startActivity(intent)
          }
          binding.next.setOnClickListener {
-             val intentt = Intent(this, LocationActivity::class.java)
-             startActivity(intentt)
+             val intent = Intent(this, LocationActivity::class.java)
+             startActivity(intent)
          }
      }
  }
