@@ -21,19 +21,20 @@ class LocationActivity : AppCompatActivity() {
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private val locationPermissionRequestCode = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         binding.previous.setOnClickListener{
             val intent = Intent(this,AlarmSettings::class.java)
             startActivity(intent)
         }
-
         binding.next.setOnClickListener{
             if (checkSelfPermission()){
                 val intent = Intent(this,MainActivity::class.java)
-                startActivity(intent)
+            startActivity(intent)
             }else{
                 Toast.makeText(this,getString(R.string.location_permission_msg),Toast.LENGTH_LONG).show()
                 requestLocationPermission()
@@ -41,7 +42,7 @@ class LocationActivity : AppCompatActivity() {
         }
 //        ============ location ==============
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        locationRequest = LocationRequest.Builder(1000L)
+         locationRequest = LocationRequest.Builder(1000L)
             .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
             .build()
         locationCallback = object : LocationCallback(){
@@ -51,13 +52,11 @@ class LocationActivity : AppCompatActivity() {
             }
         }
 
-
-
         binding.location.setOnClickListener{
 
             startLocationUpdates()
         }
-//        val task = fusedLocationProviderClient.getCurrentLocation (locationRequest.priority, null)
+        //        val task = fusedLocationProviderClient.getCurrentLocation (locationRequest.priority, null)
 //        task.addOnSuccessListener { location ->
 //            if (location != null) {
 //                val longitude = location.longitude
@@ -80,15 +79,15 @@ class LocationActivity : AppCompatActivity() {
 
         stopLocationUpdates ()
     }
-    //    ========= location handling ===============
+//    ========= location handling ===============
 //    ========= Request location permission =======
     private fun requestLocationPermission(){
         ActivityCompat.requestPermissions(this ,
-            arrayOf( Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION),
+        arrayOf( Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION),
             locationPermissionRequestCode)
     }
-    //     ================= check permission ===========
+//     ================= check permission ===========
     private fun checkSelfPermission():Boolean{
         return ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
@@ -97,14 +96,14 @@ class LocationActivity : AppCompatActivity() {
     }
 
     private fun startLocationUpdates() {
-        if (checkSelfPermission()) {
-            fusedLocationProviderClient.requestLocationUpdates (locationRequest, locationCallback, null)
+            if (checkSelfPermission()) {
+                fusedLocationProviderClient.requestLocationUpdates (locationRequest, locationCallback, null)
 
-        }else{
-            requestLocationPermission()
+            }else{
+                requestLocationPermission()
+            }
+
         }
-
-    }
     private fun stopLocationUpdates () {
         fusedLocationProviderClient.removeLocationUpdates (locationCallback)
     }

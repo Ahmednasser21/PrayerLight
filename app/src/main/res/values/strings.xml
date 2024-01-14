@@ -48,8 +48,8 @@
     <string name="home">Home</string>
     <string name="azkar">Azkar</string>
     <string name="pray">Pray Times</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="location_permission_msg">Location permission must be granted to be able to continue</string>
 
 
 </resources>
