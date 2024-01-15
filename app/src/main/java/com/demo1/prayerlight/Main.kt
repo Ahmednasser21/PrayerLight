@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.demo1.prayerlight.databinding.FragmentMainBinding
@@ -33,60 +34,115 @@ class Main : Fragment(), LocationListener {
     private var param2: String? = null
     private lateinit var binding: FragmentMainBinding
     private lateinit var locationManager: LocationManager
+    private var location: Location? = null
+    private val locationRequestCode = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        // Get a reference to the LocationManager class
+
         locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMainBinding.inflate(inflater,container,false)
+        binding = FragmentMainBinding.inflate(inflater, container, false)
+
+ //        ===== Get last known location and ask for permission if it is not granted====
+
+            location = when (checkSelfPermission()) {
+            true -> {
+                // Permission is already granted, get the last known location
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            }
+            false -> {
+                requestLocationPermission()
+
+                if(checkSelfPermission())locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+                else  Toast.makeText(requireContext(), getString(R.string.location_permission_msg), Toast.LENGTH_SHORT).show()
+                null
+            }
+        }
+
+        if (location != null) {
+            val longitude = location!!.longitude
+            val latitude = location!!.latitude
+            val geocoder = Geocoder(requireContext(), Locale.getDefault())
+            val addresses: List<Address> =
+            geocoder.getFromLocation(latitude, longitude, 1) as List<Address>
+            val placeName = addresses[0].getAddressLine(0)
+            binding.locationText.text = placeName
+        }
+//        ================================ prayer time handling ==================
+//            val coordinates = Coordinates(location!!.latitude, location!!.longitude)
+//
+//            val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+//            val month = Calendar.getInstance().get(Calendar.MONTH)
+//            val year = Calendar.getInstance().get(Calendar.YEAR)
+//
+//            val date = DateComponents(year, month, day)
+//            val params = CalculationMethod.EGYPTIAN.parameters
+//                .copy(madhab = Madhab.HANAFI, prayerAdjustments = PrayerAdjustments(fajr = 19))
+//
+//            val prayerTimes = PrayerTimes(coordinates, date, params)
+//
+//
+//            val fajrTime = prayerTimes.fajr
+//            val sunriseTime = prayerTimes.sunrise
+//            val dhuhrTime = prayerTimes.dhuhr
+//            val asrTime = prayerTimes.asr
+//            val maghribTime = prayerTimes.maghrib
+//            val ishaTime = prayerTimes.isha
+//
+////            binding.fajrTime.text = fajrTime.toString()
+////            binding.sunriseTime.text = sunriseTime.toString()
+////            binding.zohrTime.text = dhuhrTime.toString()
+////            binding.asrTime.text = asrTime.toString()
+////            binding.maghribTime.text = maghribTime.toString()
+////            binding.eshaaTime.text = ishaTime.toString()
+////            ========================================================
+//
+////               binding.prayName.text = prayerTimes.currentPrayer(fajrTime).toString()
+////                binding.prayTime.text = prayerTimes.nextPrayer(dhuhrTime).toString()
+////            binding.countdown.text=prayerTimes.timeForPrayer(Prayer.SUNRISE).toString()
+//
+//        ================================ end of prayer time handling ==================
 
         return binding.root
     }
+    private fun requestLocationPermission(){
+        ActivityCompat.requestPermissions(requireActivity(),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION ,
+                Manifest.permission.ACCESS_COARSE_LOCATION),
+            locationRequestCode
+        )
+    }
+    private fun checkSelfPermission():Boolean{
+        return ActivityCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
 
-    override fun onResume() {
-        super.onResume()
-        // Check if the location provider is enabled
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            // Request location updates from the location provider
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return
-            }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
-        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // Remove location updates
+
         locationManager.removeUpdates(this)
     }
 
-    // Implement the LocationListener interface
     override fun onLocationChanged(location: Location) {
-        // Get the location information, such as longitude and latitude
+
         val longitude = location.longitude
         val latitude = location.latitude
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
@@ -95,17 +151,8 @@ class Main : Fragment(), LocationListener {
         binding.locationText.text =placeName
     }
 
-    override fun onProviderEnabled(provider: String) {
-        // Do something when the location provider is enabled
-    }
 
-    override fun onProviderDisabled(provider: String) {
-        // Do something when the location provider is disabled
-    }
 
-    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-        // Do something when the location provider status changes
-    }
 
     companion object {
         /**
@@ -127,3 +174,11 @@ class Main : Fragment(), LocationListener {
             }
     }
 }
+
+//        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//
+//            if (checkSelfPermission()) requestLocationPermission()
+//
+//           locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
+//
+//        }
