@@ -140,7 +140,11 @@ class Main : Fragment(), LocationListener {
 
             var nextPrayerTime =prayerTimes.timeForPrayer(nextPrayer)
             if (currentPrayer == Prayer.ISHA) {
-                day = day.inc()
+                val currentDate = LocalDate.of(year, month, day)
+                val nextDay = currentDate.plusDays(1)
+                val formatterGregorian = DateTimeFormatter.ofPattern("dd")
+                val nextReformattedDay =  nextDay.format(formatterGregorian).toInt()
+                day = nextReformattedDay
                 date = DateComponents(year, month, day)
                 prayerTimes = PrayerTimes(coordinates, date, params)
                 nextPrayerTime = prayerTimes.timeForPrayer(nextPrayer)
