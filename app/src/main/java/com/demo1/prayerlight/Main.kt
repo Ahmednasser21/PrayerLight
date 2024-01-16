@@ -15,36 +15,55 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.batoulapps.adhan2.CalculationMethod
+import com.batoulapps.adhan2.Coordinates
+import com.batoulapps.adhan2.Madhab
+import com.batoulapps.adhan2.PrayerAdjustments
+import com.batoulapps.adhan2.PrayerTimes
+import com.batoulapps.adhan2.data.DateComponents
 import com.demo1.prayerlight.databinding.FragmentMainBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Main.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Main : Fragment(), LocationListener {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     private lateinit var binding: FragmentMainBinding
     private lateinit var locationManager: LocationManager
     private var location: Location? = null
     private val locationRequestCode = 100
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
 
-        locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationManager =
+            requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        //        ===== Get last known location and ask for permission if it is not granted====
+
+        location = when (checkSelfPermission()) {
+            true -> {
+
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            }
+
+            false -> {
+                requestLocationPermission()
+
+                if (checkSelfPermission()) locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                else Toast.makeText(
+                    requireContext(),
+                    getString(R.string.location_permission_msg),
+                    Toast.LENGTH_SHORT
+                ).show()
+                null
+            }
+        }
 
     }
 
@@ -54,65 +73,76 @@ class Main : Fragment(), LocationListener {
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
- //        ===== Get last known location and ask for permission if it is not granted====
 
-            location = when (checkSelfPermission()) {
-            true -> {
-                // Permission is already granted, get the last known location
-                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            }
-            false -> {
-                requestLocationPermission()
 
-                if(checkSelfPermission())locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+//        ================================ prayer time handling ==================
 
-                else  Toast.makeText(requireContext(), getString(R.string.location_permission_msg), Toast.LENGTH_SHORT).show()
-                null
-            }
-        }
 
-        if (location != null) {
-            val longitude = location!!.longitude
-            val latitude = location!!.latitude
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            getData()
+//        }
+        location?.let { loc ->
+            val longitude = loc.longitude
+            val latitude = loc.latitude
             val geocoder = Geocoder(requireContext(), Locale.getDefault())
             val addresses: List<Address> =
-            geocoder.getFromLocation(latitude, longitude, 1) as List<Address>
-            val placeName = addresses[0].getAddressLine(0)
-            binding.locationText.text = placeName
+                geocoder.getFromLocation(latitude, longitude, 1) as List<Address>
+            val cityName = addresses[0].subAdminArea
+            val governmentName = addresses[0].adminArea
+            val countryName = addresses[0].countryName
+            val placeName = "$cityName, $governmentName, $countryName"
+            val coordinates = Coordinates(latitude, longitude)
+            val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            val month = Calendar.getInstance().get(Calendar.MONTH)+1
+            val year = Calendar.getInstance().get(Calendar.YEAR)
+            val date = DateComponents(year, month, day)
+            val params = CalculationMethod.EGYPTIAN.parameters
+                .copy(
+                    madhab = Madhab.SHAFI, prayerAdjustments =
+                    PrayerAdjustments(
+                        fajr = 7, dhuhr = -1,
+                        asr = -1, isha = -2
+                    )
+                )
+            val prayerTimes = PrayerTimes(coordinates, date, params)
+
+            val formatter = SimpleDateFormat("hh:mm a",Locale.getDefault())
+            formatter.timeZone = TimeZone.getTimeZone("Africa/Cairo")
+            val fajrTimee =
+                formatter.format(Date(prayerTimes.fajr.toEpochMilliseconds())).toString()
+            val sunriseTimee =
+                formatter.format(Date(prayerTimes.sunrise.toEpochMilliseconds())).toString()
+            val dhuhrTime =
+                formatter.format(Date(prayerTimes.dhuhr.toEpochMilliseconds())).toString()
+            val asrTimee =
+                formatter.format(Date(prayerTimes.asr.toEpochMilliseconds())).toString()
+            val maghribTimee =
+                formatter.format(Date(prayerTimes.maghrib.toEpochMilliseconds())).toString()
+            val ishaTime =
+                formatter.format(Date(prayerTimes.isha.toEpochMilliseconds())).toString()
+
+            binding.apply {
+                locationText.text = placeName
+                fajrTime.text = fajrTimee
+                sunriseTime.text = sunriseTimee
+                zohrTime.text = dhuhrTime
+                asrTime.text = asrTimee
+                maghribTime.text = maghribTimee
+                eshaaTime.text = ishaTime
+            }
+
+
         }
-//        ================================ prayer time handling ==================
-//            val coordinates = Coordinates(location!!.latitude, location!!.longitude)
-//
-//            val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-//            val month = Calendar.getInstance().get(Calendar.MONTH)
-//            val year = Calendar.getInstance().get(Calendar.YEAR)
-//
-//            val date = DateComponents(year, month, day)
-//            val params = CalculationMethod.EGYPTIAN.parameters
-//                .copy(madhab = Madhab.HANAFI, prayerAdjustments = PrayerAdjustments(fajr = 19))
-//
-//            val prayerTimes = PrayerTimes(coordinates, date, params)
-//
-//
-//            val fajrTime = prayerTimes.fajr
-//            val sunriseTime = prayerTimes.sunrise
-//            val dhuhrTime = prayerTimes.dhuhr
-//            val asrTime = prayerTimes.asr
-//            val maghribTime = prayerTimes.maghrib
-//            val ishaTime = prayerTimes.isha
-//
-////            binding.fajrTime.text = fajrTime.toString()
-////            binding.sunriseTime.text = sunriseTime.toString()
-////            binding.zohrTime.text = dhuhrTime.toString()
-////            binding.asrTime.text = asrTime.toString()
-////            binding.maghribTime.text = maghribTime.toString()
-////            binding.eshaaTime.text = ishaTime.toString()
 ////            ========================================================
-//
-////               binding.prayName.text = prayerTimes.currentPrayer(fajrTime).toString()
-////                binding.prayTime.text = prayerTimes.nextPrayer(dhuhrTime).toString()
-////            binding.countdown.text=prayerTimes.timeForPrayer(Prayer.SUNRISE).toString()
-//
+//        val now = Clock.System.now()
+//        val currentPrayer = prayerTimes.currentPrayer(now)
+//        val nextPrayer = prayerTimes.nextPrayer(now)
+//        val countdown =
+//            formatter.format(prayerTimes.timeForPrayer(nextPrayer)?.toEpochMilliseconds())
+//        binding.prayName.text = currentPrayer.toString()
+//        binding.prayTime.text = nextPrayer.toString()
+//        binding.countdown.text = countdown.toString()
+
 //        ================================ end of prayer time handling ==================
 
         return binding.root
@@ -143,35 +173,6 @@ class Main : Fragment(), LocationListener {
 
     override fun onLocationChanged(location: Location) {
 
-        val longitude = location.longitude
-        val latitude = location.latitude
-        val geocoder = Geocoder(requireContext(), Locale.getDefault())
-        val addresses: List<Address> = geocoder.getFromLocation(latitude, longitude, 1) as List<Address>
-        val placeName = addresses[0].getAddressLine(0)
-        binding.locationText.text =placeName
-    }
-
-
-
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Main.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Main().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }
 

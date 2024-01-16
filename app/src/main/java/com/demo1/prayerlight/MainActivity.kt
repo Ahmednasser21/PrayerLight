@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager2.widget.ViewPager2
 import com.demo1.prayerlight.databinding.ActivityMainBinding
 
 
@@ -18,45 +17,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 //        =========== Handling Bottom nav view=================
-        binding.viewerPager.adapter = PagerAdapter(this)
-
-        binding.bottomNavBar.setOnItemSelectedListener { item ->
+        binding.bottomNavBar.setOnNavigationItemSelectedListener { item ->
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
             when (item.itemId) {
-                R.id.pray -> binding.viewerPager.currentItem = 0
-                R.id.home -> binding.viewerPager.currentItem = 1
-                R.id.azkar -> binding.viewerPager.currentItem = 2
-            }
-            when (item.itemId) {
-                R.id.pray -> supportActionBar?.title = "Prayer Times"
-                R.id.home -> supportActionBar?.title = "Prayer Light"
-                R.id.azkar -> supportActionBar?.title = "Azkar"
-            }
-            true
-        }
-
-        binding.bottomNavBar.selectedItemId = R.id.home
-
-//        ======= viewer pager handling to sync the label with swiping gesture======
-
-        binding.viewerPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-            }
-
-            override fun onPageSelected(position: Int) {
-
-                when (position) {
-                    0 -> binding.bottomNavBar.selectedItemId = R.id.pray
-                    1 -> binding.bottomNavBar.selectedItemId = R.id.home
-                    2 -> binding.bottomNavBar.selectedItemId = R.id.azkar
+                R.id.home -> {
+                    fragmentTransaction.replace(R.id.fragment_container, Main())
+                    fragmentTransaction.commit()
+                    true
                 }
+                R.id.pray -> {
+                    fragmentTransaction.replace(R.id.fragment_container, PrayerTimes())
+                    fragmentTransaction.commit()
+                    true
+                }
+                R.id.azkar -> {
+                    fragmentTransaction.replace(R.id.fragment_container, Azkar())
+                    fragmentTransaction.commit()
+                    true
+                }
+                else -> false
             }
-
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
-        })
-
+        }
+        binding.bottomNavBar.selectedItemId = R.id.home
 //        =========== End of handling Bottom nav view =================
     }
 //    ================ option menu =================================
