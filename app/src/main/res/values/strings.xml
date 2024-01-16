@@ -50,6 +50,7 @@
     <string name="pray">Pray Times</string>
     <string name="hello_blank_fragment">Hello blankk fragment</string>
     <string name="location_permission_msg">location permission must be granted in order to continue</string>
+    <string name="its">it`s</string>
 
 
 </resources>

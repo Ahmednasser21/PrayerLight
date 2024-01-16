@@ -9,6 +9,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +19,16 @@ import androidx.fragment.app.Fragment
 import com.batoulapps.adhan2.CalculationMethod
 import com.batoulapps.adhan2.Coordinates
 import com.batoulapps.adhan2.Madhab
+import com.batoulapps.adhan2.Prayer
 import com.batoulapps.adhan2.PrayerAdjustments
 import com.batoulapps.adhan2.PrayerTimes
 import com.batoulapps.adhan2.data.DateComponents
 import com.demo1.prayerlight.databinding.FragmentMainBinding
+import kotlinx.datetime.Clock
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.chrono.HijrahDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -77,13 +83,10 @@ class Main : Fragment(), LocationListener {
 
 //        ================================ prayer time handling ==================
 
-
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            getData()
-//        }
         location?.let { loc ->
             val longitude = loc.longitude
             val latitude = loc.latitude
+//            ======== Getting the address from location =======
             val geocoder = Geocoder(requireContext(), Locale.getDefault())
             val addresses: List<Address> =
                 geocoder.getFromLocation(latitude, longitude, 1) as List<Address>
@@ -91,11 +94,13 @@ class Main : Fragment(), LocationListener {
             val governmentName = addresses[0].adminArea
             val countryName = addresses[0].countryName
             val placeName = "$cityName, $governmentName, $countryName"
+//            ===== End of getting the address from location=======
+//            ====== Implementing prayerTimes ========
             val coordinates = Coordinates(latitude, longitude)
-            val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            var day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
             val month = Calendar.getInstance().get(Calendar.MONTH)+1
             val year = Calendar.getInstance().get(Calendar.YEAR)
-            val date = DateComponents(year, month, day)
+            var date = DateComponents(year, month, day)
             val params = CalculationMethod.EGYPTIAN.parameters
                 .copy(
                     madhab = Madhab.SHAFI, prayerAdjustments =
@@ -104,23 +109,80 @@ class Main : Fragment(), LocationListener {
                         asr = -1, isha = -2
                     )
                 )
-            val prayerTimes = PrayerTimes(coordinates, date, params)
-
+            var prayerTimes = PrayerTimes(coordinates, date, params)
+//            ====== End of implementing prayerTimes ========
+//            ====== Formatter and each pray time =======
             val formatter = SimpleDateFormat("hh:mm a",Locale.getDefault())
             formatter.timeZone = TimeZone.getTimeZone("Africa/Cairo")
-            val fajrTimee =
-                formatter.format(Date(prayerTimes.fajr.toEpochMilliseconds())).toString()
-            val sunriseTimee =
-                formatter.format(Date(prayerTimes.sunrise.toEpochMilliseconds())).toString()
-            val dhuhrTime =
-                formatter.format(Date(prayerTimes.dhuhr.toEpochMilliseconds())).toString()
-            val asrTimee =
-                formatter.format(Date(prayerTimes.asr.toEpochMilliseconds())).toString()
-            val maghribTimee =
-                formatter.format(Date(prayerTimes.maghrib.toEpochMilliseconds())).toString()
-            val ishaTime =
-                formatter.format(Date(prayerTimes.isha.toEpochMilliseconds())).toString()
 
+            var fajrTimee =
+                formatter.format(Date(prayerTimes.fajr.toEpochMilliseconds()))
+            val sunriseTimee =
+                formatter.format(Date(prayerTimes.sunrise.toEpochMilliseconds()))
+            val dhuhrTime =
+                formatter.format(Date(prayerTimes.dhuhr.toEpochMilliseconds()))
+            val asrTimee =
+                formatter.format(Date(prayerTimes.asr.toEpochMilliseconds()))
+            val maghribTimee =
+                formatter.format(Date(prayerTimes.maghrib.toEpochMilliseconds()))
+            val ishaTime =
+                formatter.format(Date(prayerTimes.isha.toEpochMilliseconds()))
+//            ========= End of Formatter and each pray time =======
+//            ========= Next pray name ===========
+            val now = Clock.System.now()
+            val currentPrayer = prayerTimes.currentPrayer(now)
+            val nextPrayer = if (currentPrayer == Prayer.ISHA){
+                Prayer.FAJR }else{
+                prayerTimes.nextPrayer(now)
+            }
+//             ========= End of next pray name ===========
+//             ========= Next pray time ===========
+
+            var nextPrayerTime =prayerTimes.timeForPrayer(nextPrayer)
+            if (currentPrayer == Prayer.ISHA) {
+                day = day.inc()
+                date = DateComponents(year, month, day)
+                prayerTimes = PrayerTimes(coordinates, date, params)
+                nextPrayerTime = prayerTimes.timeForPrayer(nextPrayer)
+                fajrTimee =
+                    formatter.format(Date(prayerTimes.fajr.toEpochMilliseconds()))
+            }
+//             ========= End of next pray time ===========
+
+            val nextPrayerTimeS =
+                formatter.format((nextPrayerTime?.toEpochMilliseconds())) // format for the next pray time as string
+//            ========== Countdown for the next pray ===========
+            val diff = nextPrayerTime?.toEpochMilliseconds()!!.minus(now.toEpochMilliseconds())
+            val countDownTimer = object : CountDownTimer(diff, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+
+                    val hours = millisUntilFinished / 3600000
+                    val minutes = (millisUntilFinished % 3600000) / 60000
+                    val seconds = (millisUntilFinished % 60000) / 1000
+                    val remainingTime = "-$hours:$minutes:$seconds"
+                    binding.countdown.text=remainingTime
+                }
+
+                override fun onFinish() {
+                    binding.countdown.text = getString(R.string.its) +"$nextPrayer"+getString(R.string.time)
+                }
+            }
+            countDownTimer.start()
+
+//            ========== End of countdown for the next pray ===========
+
+//                ====== date formatter ==========
+//            == Gregorian ==
+            val dateGregorian = LocalDate.now()
+            val patternGregorian = "EEEE. dd MMMM"
+            val formatterGregorian = DateTimeFormatter.ofPattern(patternGregorian)
+            val formattedGregorianDate = dateGregorian.format(formatterGregorian)
+////            == Hijri ==
+            val hijrahDate = HijrahDate.now()
+            val patternHijrah = "d MMMM yyyy 'H'"
+            val formatterHijrah = DateTimeFormatter.ofPattern(patternHijrah)
+            val formattedHijriDate = hijrahDate.format(formatterHijrah)
+//            ========== End date formatter  =======
             binding.apply {
                 locationText.text = placeName
                 fajrTime.text = fajrTimee
@@ -129,19 +191,12 @@ class Main : Fragment(), LocationListener {
                 asrTime.text = asrTimee
                 maghribTime.text = maghribTimee
                 eshaaTime.text = ishaTime
+                birthCalender.text= formattedGregorianDate
+                higriCalender.text=formattedHijriDate
+                prayName.text = nextPrayer.toString()
+                prayTime.text = nextPrayerTimeS
             }
-
-
         }
-////            ========================================================
-//        val now = Clock.System.now()
-//        val currentPrayer = prayerTimes.currentPrayer(now)
-//        val nextPrayer = prayerTimes.nextPrayer(now)
-//        val countdown =
-//            formatter.format(prayerTimes.timeForPrayer(nextPrayer)?.toEpochMilliseconds())
-//        binding.prayName.text = currentPrayer.toString()
-//        binding.prayTime.text = nextPrayer.toString()
-//        binding.countdown.text = countdown.toString()
 
 //        ================================ end of prayer time handling ==================
 
@@ -175,11 +230,3 @@ class Main : Fragment(), LocationListener {
 
     }
 }
-
-//        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//
-//            if (checkSelfPermission()) requestLocationPermission()
-//
-//           locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
-//
-//        }

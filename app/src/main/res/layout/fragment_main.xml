@@ -78,6 +78,7 @@
             android:id="@+id/higri_calender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:text="@string/hijri_calender"
             android:textSize="25sp"
             android:textColor="@color/black"/>
@@ -86,9 +87,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/higri_calender"
+            android:layout_marginStart="5dp"
             android:text="@string/birth_calender"
             android:textSize="20sp"
-            android:textColor="#C1000000"/>
+            android:textColor="#E6000000"/>
         <TextView
             android:id="@+id/sunrise"
             android:layout_width="wrap_content"
@@ -96,7 +98,7 @@
             android:text="@string/sun_rise"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="15dp"
             android:textSize="25sp"
             android:textColor="@color/black" />
         <TextView
@@ -110,12 +112,13 @@
             android:textSize="25sp"
             android:textColor="@color/black" />
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/sun_rise"
             android:src="@drawable/ic_sunrise"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="100dp"/>
+            android:layout_marginEnd="130dp"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
@@ -132,7 +135,8 @@
                 android:id="@+id/linear1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginStart="5dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -166,14 +170,14 @@
                     android:text="@string/eshaa"
                     android:textSize="35sp"
                     android:textColor="@color/black"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="20dp"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linear2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/linear1"
+                android:layout_centerHorizontal="true"
                 android:orientation="vertical"
                 android:layout_marginStart="20dp">
                 <ImageView
@@ -205,7 +209,7 @@
                     android:layout_height="48dp"
                     android:contentDescription="@string/eshaa"
                     android:src="@drawable/ic_esha"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="20dp" />
 
             </LinearLayout>
 
@@ -214,8 +218,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_toEndOf="@id/linear2"
-                android:layout_marginStart="35dp">
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="5dp">
                 <TextView
                     android:id="@+id/fajr_time"
                     android:layout_width="wrap_content"
