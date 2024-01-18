@@ -31,7 +31,7 @@
 
 <!--    ============== Action bar  text style ================-->
     <style name="MyActionBarTitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 

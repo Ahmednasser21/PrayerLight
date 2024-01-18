@@ -17,8 +17,8 @@
     </ImageView>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="45dp"
+        android:layout_height="20dp"
         android:layout_alignStart="@+id/acc"
         android:layout_alignParentTop="true"
         android:layout_marginStart="26dp"

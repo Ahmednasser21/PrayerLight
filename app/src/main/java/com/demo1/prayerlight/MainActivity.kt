@@ -17,22 +17,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 //        =========== Handling Bottom nav view=================
-        binding.bottomNavBar.setOnNavigationItemSelectedListener { item ->
+        binding.bottomNavBar.setOnItemSelectedListener { item ->
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             when (item.itemId) {
                 R.id.home -> {
                     fragmentTransaction.replace(R.id.fragment_container, Main())
                     fragmentTransaction.commit()
+                    supportActionBar?.title = getString(R.string.app_name)
                     true
+
                 }
                 R.id.pray -> {
                     fragmentTransaction.replace(R.id.fragment_container, PrayerTimes())
                     fragmentTransaction.commit()
+                    supportActionBar?.title=getString(R.string.pray)
                     true
                 }
                 R.id.azkar -> {
                     fragmentTransaction.replace(R.id.fragment_container, Azkar())
                     fragmentTransaction.commit()
+                    supportActionBar?.title = getString(R.string.azkar)
                     true
                 }
                 else -> false
