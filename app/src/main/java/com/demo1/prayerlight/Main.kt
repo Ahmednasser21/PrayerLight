@@ -105,8 +105,8 @@ class Main : Fragment(), LocationListener {
                 .copy(
                     madhab = Madhab.SHAFI, prayerAdjustments =
                     PrayerAdjustments(
-                        fajr = 7, dhuhr = -1,
-                        asr = -1, isha = -2
+                        fajr = 8, dhuhr = -1,
+                        isha = -3
                     )
                 )
             var prayerTimes = PrayerTimes(coordinates, date, params)
