@@ -15,7 +15,7 @@
         android:src="@mipmap/backmain_foreground" />
 
     <TextView
-        android:id="@+id/pray_name"
+        android:id="@+id/next_pray_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxHeight="65dp"
@@ -29,13 +29,13 @@
         android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/pray_time"
+        android:id="@+id/next_pray_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxHeight="65dp"
         android:minHeight="55dp"
         android:text="@string/pray_time"
-        android:layout_below="@+id/pray_name"
+        android:layout_below="@+id/next_pray_name"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
         android:fontFamily="@font/cairo_bold"
@@ -47,7 +47,7 @@
         android:maxHeight="50dp"
         android:minHeight="45dp"
         android:text="@string/countdown"
-        android:layout_below="@+id/pray_time"
+        android:layout_below="@+id/next_pray_time"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
         android:fontFamily="@font/cairo"
