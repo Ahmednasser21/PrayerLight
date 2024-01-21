@@ -93,7 +93,7 @@ class Main : Fragment(), LocationListener {
             val params = CalculationMethod.EGYPTIAN.parameters
                 .copy(
                     madhab = Madhab.SHAFI, prayerAdjustments =
-                    PrayerAdjustments(dhuhr = -1)
+                    PrayerAdjustments(dhuhr = -1, asr = -1)
                 )
             var prayerTimes = PrayerTimes(coordinates, date, params)
 
@@ -158,7 +158,7 @@ class Main : Fragment(), LocationListener {
                         "Unknown location"
                     }
                 }
-                //            ==== updating the UI =========
+                //            ==== updating the UI with place name =========
                 withContext(Dispatchers.Main) {
                     binding.apply {
                         fajrTime.text = fajrTimee
@@ -175,6 +175,7 @@ class Main : Fragment(), LocationListener {
                     }
                 }
                 // ======= Start the countdown timer ==============
+
                 val countDownTimer = object : CountDownTimer(diff, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
                         val hours = millisUntilFinished / 3600000
