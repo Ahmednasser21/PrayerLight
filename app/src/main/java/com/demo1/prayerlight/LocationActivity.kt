@@ -1,25 +1,24 @@
 package com.demo1.prayerlight
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.demo1.prayerlight.databinding.ActivityLocationBinding
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 
 class LocationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLocationBinding
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: LocationCallback
     private val locationPermissionRequestCode = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,98 +30,64 @@ class LocationActivity : AppCompatActivity() {
             val intent = Intent(this,AlarmSettings::class.java)
             startActivity(intent)
         }
-        binding.next.setOnClickListener{
-            if (checkSelfPermission()){
+        binding.finish.setOnClickListener{
+            if (checkSelfPermission() && checkLocationSetting()){
                 val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
-            }else{
-                Toast.makeText(this,getString(R.string.location_permission_msg),Toast.LENGTH_LONG).show()
+            }else if(!checkSelfPermission()) {
+                Toast.makeText(this , getString(R.string.location_permission_msg),Toast.LENGTH_SHORT).show()
                 requestLocationPermission()
             }
-        }
-//        ============ location ==============
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-         locationRequest = LocationRequest.Builder(1000L)
-            .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-            .build()
-        locationCallback = object : LocationCallback(){
-            override fun onLocationResult(locationResult: LocationResult) {
-                super.onLocationResult(locationResult)
-                val location = locationResult.lastLocation
+            else {
+                Toast.makeText(this,getString(R.string.location_setting_msg),Toast.LENGTH_LONG).show()
+                requestLocationSettings()
             }
         }
-
         binding.location.setOnClickListener{
-
-            startLocationUpdates()
-        }
-        //        val task = fusedLocationProviderClient.getCurrentLocation (locationRequest.priority, null)
-//        task.addOnSuccessListener { location ->
-//            if (location != null) {
-//                val longitude = location.longitude
-//                val latitude = location.latitude
-//                val geocoder = Geocoder(this, Locale.getDefault())
-//                val addresses: List<Address> = geocoder.getFromLocation(latitude, longitude, 1) as List<Address>
-//                val placeName = addresses[0].getAddressLine(0)
-//                binding.txt2.text = placeName.toString()
-//            }
-//        }
-    }
-    override fun onResume () {
-        super.onResume ()
-
-        if (checkSelfPermission ()) startLocationUpdates ()
-    }
-
-    override fun onPause () {
-        super.onPause ()
-
-        stopLocationUpdates ()
-    }
-//    ========= location handling ===============
-//    ========= Request location permission =======
-    private fun requestLocationPermission(){
-        ActivityCompat.requestPermissions(this ,
-        arrayOf( Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION),
-            locationPermissionRequestCode)
-    }
-//     ================= check permission ===========
-    private fun checkSelfPermission():Boolean{
-        return ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)==
-                PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun startLocationUpdates() {
-            if (checkSelfPermission()) {
-                fusedLocationProviderClient.requestLocationUpdates (locationRequest, locationCallback, null)
-
-            }else{
-                requestLocationPermission()
-            }
-
-        }
-    private fun stopLocationUpdates () {
-        fusedLocationProviderClient.removeLocationUpdates (locationCallback)
-    }
-
-    // ================ OnRequestPermissionsResult ================
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == locationPermissionRequestCode){
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED ){
-                startLocationUpdates()
-            }
-        }else{
-            Toast.makeText(this,getString(R.string.location_permission_msg),Toast.LENGTH_LONG).show()
+            Toast.makeText(this , getString(R.string.location_permission_msg),Toast.LENGTH_SHORT).show()
             requestLocationPermission()
         }
     }
-//     ============ End of location handling ===============
+
+////    ========= Request location permission =======
+private fun requestLocationSettings(){
+    val locationRequest = LocationRequest.Builder(1000).
+    setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY).build()
+    val builder = LocationSettingsRequest.Builder()
+        .addLocationRequest(locationRequest)
+    val settingsClient = LocationServices.getSettingsClient(this)
+    val task = settingsClient.checkLocationSettings(builder.build())
+    task.addOnSuccessListener {
+        // All location settings are satisfied, start the next activity
+    }
+    task.addOnFailureListener { exception ->
+        if (exception is ResolvableApiException){
+            // Location settings are not satisfied, show the user a dialog
+            try {
+                // Show the dialog by calling startResolutionForResult(),
+                // and check the result in onActivityResult().
+                exception.startResolutionForResult(this, locationPermissionRequestCode)
+            } catch (sendEx: IntentSender.SendIntentException) {
+                // Ignore the error.
+            }
+        }
+    }
+}
+    private fun requestLocationPermission(){
+        ActivityCompat.requestPermissions(this ,
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION)
+            ,locationPermissionRequestCode)
+    }
+    private fun checkSelfPermission():Boolean{
+
+        return   ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)==
+                PackageManager.PERMISSION_GRANTED
+    }
+    private fun checkLocationSetting():Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        return isGpsEnabled && isNetworkEnabled
+
+    }
 }
