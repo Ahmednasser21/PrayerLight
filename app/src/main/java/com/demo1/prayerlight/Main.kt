@@ -23,8 +23,8 @@ import com.batoulapps.adhan2.data.DateComponents
 import com.demo1.prayerlight.databinding.FragmentMainBinding
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnFailureListener
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +44,7 @@ class Main : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val locationRequestCode = 100
-    private val REQUEST_CHECK_SETTINGS = 0x1
+    private val requistCheckSettings = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +66,7 @@ class Main : Fragment() {
         if (checkSelfPermission()) {
 
             fusedLocationProviderClient.getCurrentLocation(
-                LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY,
+             Priority.PRIORITY_BALANCED_POWER_ACCURACY,
                 CancellationTokenSource().token
             )
                 .addOnSuccessListener { location ->
@@ -139,6 +139,7 @@ class Main : Fragment() {
                     val formattedHijriDate = hijrahDate.format(formatterHijrah)
 
                     // Use coroutines to perform geocoding and countdown in the background
+
                     lifecycleScope.launch {
                         // Get the place name from the geocoder
                         val placeName = withContext(Dispatchers.IO) {
@@ -194,14 +195,10 @@ class Main : Fragment() {
                 }.addOnFailureListener {
                     OnFailureListener { exception ->
                         if (exception is ResolvableApiException) {
-                            // Location settings are not satisfied, but this can be fixed
-                            // by showing the user a dialog.
                             try {
-                                // Show the dialog by calling startResolutionForResult(),
-                                // and check the result in onActivityResult().
                                 exception.startResolutionForResult(
                                     requireActivity(),
-                                    REQUEST_CHECK_SETTINGS
+                                    requistCheckSettings
                                 )
                             } catch (sendEx: IntentSender.SendIntentException) {
                                 // Ignore the error.

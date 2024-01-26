@@ -47,7 +47,14 @@
     <string name="hello_blank_fragment">Hello blankk fragment</string>
     <string name="location_permission_msg">location permission must be granted in order to continue</string>
     <string name="location_setting_msg">location and internet must turned on for the first time</string>
+    <string name="configuration_finished">All configurations finished, please click on finish</string>
     <string name="its">it`s </string>
+    <string name="wifi_cellular">Enable Wifi or Cellular</string>
+    <string name="check_wifi_cellular_msg">Please enable Wifi or Cellular connection and try again.</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="check_internet">Please check internet connection and try again.</string>
+    <string name="ok">OK</string>
 
 
 </resources>
