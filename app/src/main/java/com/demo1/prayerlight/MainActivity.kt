@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             when (item.itemId) {
                 R.id.home -> {
-                    fragmentTransaction.replace(R.id.fragment_container, Main())
+                    fragmentTransaction.replace(R.id.fragment_container, Home())
                     fragmentTransaction.commit()
                     supportActionBar?.title = getString(R.string.app_name)
                     true

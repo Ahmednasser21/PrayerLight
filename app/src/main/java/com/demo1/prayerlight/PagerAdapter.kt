@@ -13,7 +13,7 @@ class PagerAdapter (fragmentActivity: FragmentActivity) : FragmentStateAdapter(f
         var fragment : Fragment?= null
         when (position){
             0-> fragment = PrayerTimes()
-            1-> fragment = Main()
+            1-> fragment = Home()
             2-> fragment = Azkar()
         }
         return fragment!!
