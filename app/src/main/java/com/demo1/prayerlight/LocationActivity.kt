@@ -37,41 +37,20 @@ class LocationActivity : AppCompatActivity() {
         binding.finish.setOnClickListener{
             if (checkSelfPermission() && checkLocationSetting() && internetConnection()){
                 val intent = Intent(this,MainActivity::class.java)
-            startActivity(intent)
-            }else if (!checkSelfPermission()) {
+                startActivity(intent)
+            }else if (!checkLocationSetting()) {
+                requestLocationSettings()
+            }
+            else if (!internetConnection()){
+                internetDialogue()
+            }
+            else{
                 Toast.makeText(
                     this,
                     getString(R.string.location_permission_msg),
                     Toast.LENGTH_SHORT
                 ).show()
-                requestLocationSettings()
-            }
-            else if (!wifiOrCellular()){
-                val alertDialog = AlertDialog.Builder(this,R.style.Dialog_Style)
-                    .setTitle( getString(R.string.wifi_cellular))
-                    .setMessage(getString(R.string.check_wifi_cellular_msg))
-                    .setPositiveButton(getString(R.string.settings)) { _, _ ->
-                        val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
-                        startActivity(intent)
-                    }
-                    .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
-                alertDialog.show()
-            }
-            else if (!internetConnection()){
-                val alertDialog = AlertDialog.Builder(this,R.style.Dialog_Style)
-                    .setTitle(getString(R.string.no_internet))
-                    .setMessage(getString(R.string.check_internet))
-                    .setNegativeButton(R.string.ok) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .create()
-                alertDialog.show()
-            }
-            else{
-                requestLocationSettings()
+                requestLocationPermission()
             }
         }
         binding.location.setOnClickListener{
@@ -85,7 +64,7 @@ class LocationActivity : AppCompatActivity() {
                 ).show()
                 requestLocationPermission()
             }else{
-                Toast.makeText(this,getString(R.string.configuration_finished),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.location_configuration_finished),Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -135,16 +114,22 @@ private fun requestLocationSettings(){
         val connectivityManager = getSystemService(ConnectivityManager::class.java)
         val currentNetwork = connectivityManager.activeNetwork
         val caps = connectivityManager.getNetworkCapabilities(currentNetwork)
-
-        return caps?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)?:false
-
+        val validation =caps?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)?:false
+        val internet = caps?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)?:false
+        return validation && internet
     }
-    private fun wifiOrCellular():Boolean{
-        val connectivityManager = getSystemService(ConnectivityManager::class.java)
-        val currentNetwork = connectivityManager.activeNetwork
-        val caps = connectivityManager.getNetworkCapabilities(currentNetwork)
-        val wifi = caps?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)?:false
-        val cellular = caps?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)?:false
-        return wifi || cellular
+    private fun internetDialogue(){
+        val alertDialog = AlertDialog.Builder(this,R.style.Dialog_Style)
+            .setTitle(getString(R.string.no_internet))
+            .setMessage(getString(R.string.check_internet))
+            .setPositiveButton(getString(R.string.settings)) { _, _ ->
+                val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+                startActivity(intent)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+        alertDialog.show()
     }
 }

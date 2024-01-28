@@ -3,12 +3,16 @@ package com.demo1.prayerlight
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.LocationManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,11 +82,16 @@ class Home : Fragment() {
         }
 
             binding.image.setOnClickListener {
-                if (checkLocationSetting()) {
+                if (checkLocationSetting() && internetConnection()) {
 
                     updateLocationDialog()
-                } else {
+
+                } else if (!checkLocationSetting()) {
+
                     requestLocationSettings()
+                }
+                else{
+                    internetDialogue()
                 }
             }
 
@@ -150,7 +159,14 @@ class Home : Fragment() {
             .create()
         alertDialogue.show()
     }
-
+    private fun internetConnection():Boolean{
+        val connectivityManager = getSystemService(requireContext(),ConnectivityManager::class.java)
+        val currentNetwork = connectivityManager?.activeNetwork
+        val caps = connectivityManager?.getNetworkCapabilities(currentNetwork)
+        val validation =caps?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)?:false
+        val internet = caps?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)?:false
+        return validation && internet
+    }
     private fun newLocation(){
             if (checkSelfPermission()) {
             fusedLocationProviderClient.getCurrentLocation(
@@ -278,7 +294,7 @@ class Home : Fragment() {
                                 val formattedHours = String.format("%02d", hours)
                                 val formattedMinutes = String.format("%02d", minutes)
                                 val formattedSeconds = String.format("%02d", seconds)
-                                val remainingTime = "-$formattedHours:$formattedMinutes:$formattedSeconds"
+                                val remainingTime = "-$formattedHours : $formattedMinutes : $formattedSeconds"
                                 binding.countdown.text = remainingTime
                             }
 
@@ -431,7 +447,7 @@ class Home : Fragment() {
                         val formattedHours = String.format("%02d", hours)
                         val formattedMinutes = String.format("%02d", minutes)
                         val formattedSeconds = String.format("%02d", seconds)
-                        val remainingTime = "-$formattedHours:$formattedMinutes:$formattedSeconds"
+                        val remainingTime = "-$formattedHours : $formattedMinutes : $formattedSeconds"
                         binding.countdown.text = remainingTime
                     }
 
@@ -448,5 +464,19 @@ class Home : Fragment() {
 
             // ...
         }
+    }
+    private fun internetDialogue(){
+        val alertDialog = androidx.appcompat.app.AlertDialog.Builder(requireContext(),R.style.Dialog_Style)
+            .setTitle(getString(R.string.no_internet))
+            .setMessage(getString(R.string.check_internet))
+            .setPositiveButton(getString(R.string.settings)) { _, _ ->
+                val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+                startActivity(intent)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+        alertDialog.show()
     }
 }
