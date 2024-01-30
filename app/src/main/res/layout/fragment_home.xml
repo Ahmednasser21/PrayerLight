@@ -15,7 +15,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"
         android:scaleType="fitXY"
-        android:src="@drawable/__04" />
+        android:src="@drawable/middle" />
 
     <TextView
         android:id="@+id/next_pray_name"

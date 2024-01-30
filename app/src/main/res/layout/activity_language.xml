@@ -7,45 +7,41 @@
     tools:context=".LanguageActivity">
 
 
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="87dp"
-            android:layout_marginEnd="5dp"
-            android:layout_toStartOf="@+id/txt"
-            android:contentDescription="@string/app_name"
-            android:scaleType="fitXY"
-            android:src="@mipmap/round_icon__round"
-            tools:ignore="ImageContrastCheck" />
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/app_name"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/settings2"/>
 
-    <TextView
-        android:id="@+id/txt"
+    <ImageView
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/image"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="5dp"
+        android:layout_toStartOf="@+id/txt2"
+        android:contentDescription="@string/app_name"
+        android:src="@mipmap/round_icon__round"
+        tools:ignore="ImageContrastCheck" />
+
+    <TextView
+        android:id="@+id/txt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxHeight="70dp"
+        android:minHeight="60dp"
+        android:layout_below="@+id/image"
+        android:layout_marginTop="5dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="94dp"
+        android:layout_marginEnd="89dp"
         android:fontFamily="@font/cairo_bold"
         android:text="@string/app_name"
         android:textColor="@color/second"
         android:textSize="35sp" />
-
-    <TextView
-            android:id="@+id/txt2"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txt"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/text_background"
-            android:fontFamily="@font/cairo"
-            android:gravity="center"
-            android:text="@string/chose_language"
-            android:textColor="@color/second"
-            android:textSize="25sp"
-            tools:ignore="TextSizeCheck" />
 
         <LinearLayout
             android:id="@+id/linear"
@@ -63,12 +59,13 @@
 
                 <RadioButton
                     android:id="@+id/arabic"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="50dp"
+                    android:maxHeight="55dp"
+                    android:minHeight="48dp"
                     android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/cairo"
                     android:text="@string/arabic"
                     android:textSize="25sp"/>
@@ -77,55 +74,61 @@
                     android:id="@+id/english"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxHeight="55dp"
+                    android:minHeight="48dp"
                     android:layout_gravity="start"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/cairo"
-                    android:minHeight="50dp"
                     android:text="@string/english"
                     android:textSize="25sp" />
                 <RadioButton
                     android:id="@+id/french"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxHeight="55dp"
+                    android:minHeight="48dp"
                     android:layout_gravity="start"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/cairo"
-                    android:minHeight="50dp"
                     android:text="@string/french"
                     android:textSize="25sp" />
                 <RadioButton
                     android:id="@+id/turkish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxHeight="55dp"
+                    android:minHeight="48dp"
                     android:layout_gravity="start"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/cairo"
-                    android:minHeight="50dp"
                     android:text="@string/turkish"
                     android:textSize="25sp" />
+
                 <RadioButton
                     android:id="@+id/indonesian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxHeight="55dp"
+                    android:minHeight="48dp"
                     android:layout_gravity="start"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/cairo"
-                    android:minHeight="50dp"
                     android:text="@string/indonesia"
                     android:textSize="25sp" />
                 <RadioButton
                     android:id="@+id/urdo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxHeight="55dp"
+                    android:minHeight="48dp"
                     android:layout_gravity="start"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/cairo"
-                    android:minHeight="50dp"
                     android:text="@string/urdo"
                     android:textSize="25sp" />
             </RadioGroup>
@@ -133,24 +136,25 @@
         </LinearLayout>
 
         <TextView
-              android:id="@+id/conditions"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_below="@+id/linear"
-              android:layout_marginStart="10dp"
-              android:layout_marginTop="10dp"
-              android:layout_marginEnd="10dp"
-              android:layout_marginBottom="10dp"
-              android:fontFamily="@font/cairo"
-              android:gravity="start"
-              android:text="@string/conditions"
-              android:textColor="@color/black"
-              android:textSize="20sp" />
+            android:id="@+id/conditions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="85dp"
+            android:minHeight="75dp"
+            android:layout_below="@+id/linear"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/cairo"
+            android:gravity="start"
+            android:text="@string/conditions"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/terms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxHeight="45dp"
+            android:minHeight="35dp"
             android:layout_below="@id/conditions"
             android:fontFamily="@font/cairo"
             android:layout_marginStart="10dp"
@@ -173,12 +177,10 @@
             android:id="@+id/next"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
+            android:maxHeight="55dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_margin="15dp"
             android:background="@drawable/button_background"
             android:fontFamily="@font/cairo"
             android:text="@string/next"

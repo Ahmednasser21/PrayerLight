@@ -71,7 +71,7 @@ class Home : Fragment() {
     ): View {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+//  ======== save location info by shared preferences ========
         val preferences =
             requireActivity().getSharedPreferences("location_data", Context.MODE_PRIVATE)
         if (preferences.contains("latitude") && preferences.contains("longitude")) {
@@ -80,6 +80,7 @@ class Home : Fragment() {
         else{
             newLocation()
         }
+//        ============= update location using image ===========
 
             binding.image.setOnClickListener {
                 if (checkLocationSetting() && internetConnection()) {
@@ -98,7 +99,7 @@ class Home : Fragment() {
 
             return binding.root
         }
-
+// ============= request location permission =========
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(
             requireActivity(),
@@ -106,7 +107,7 @@ class Home : Fragment() {
             locationRequestCode
         )
     }
-
+// ============ check location permission =============
     private fun checkSelfPermission(): Boolean {
         return ActivityCompat.checkSelfPermission(
             requireContext(),
@@ -114,6 +115,7 @@ class Home : Fragment() {
         ) == PackageManager.PERMISSION_GRANTED
 
     }
+//    ========= check location settings ===========
     private fun checkLocationSetting():Boolean {
         val locationManager = getSystemService(requireContext(),LocationManager::class.java) as LocationManager
         val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -121,6 +123,7 @@ class Home : Fragment() {
         return isGpsEnabled && isNetworkEnabled
 
     }
+//    =========== request location settings ================
     private fun requestLocationSettings(){
         val locationRequest = LocationRequest.Builder(10).
         setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY).build()
@@ -141,7 +144,7 @@ class Home : Fragment() {
             }
         }
     }
-
+//=========== update location dialog ==========
     private fun updateLocationDialog() {
         val alertDialogue = AlertDialog.Builder(requireContext(),R.style.Dialog_Style)
             .setTitle("Update Location")
@@ -159,6 +162,7 @@ class Home : Fragment() {
             .create()
         alertDialogue.show()
     }
+//    ========== check internet connection ======================
     private fun internetConnection():Boolean{
         val connectivityManager = getSystemService(requireContext(),ConnectivityManager::class.java)
         val currentNetwork = connectivityManager?.activeNetwork
@@ -167,6 +171,7 @@ class Home : Fragment() {
         val internet = caps?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)?:false
         return validation && internet
     }
+//    ===============new location =========
     private fun newLocation(){
             if (checkSelfPermission()) {
             fusedLocationProviderClient.getCurrentLocation(
@@ -250,6 +255,18 @@ class Home : Fragment() {
                     val hijrahDate = HijrahDate.now()
                     val formatterHijrah = DateTimeFormatter.ofPattern("d MMMM yyyy 'H'")
                     val formattedHijriDate = hijrahDate.format(formatterHijrah)
+//                    ========change main image ============
+                    val prayerImageMap = mapOf(
+                        Prayer.SUNRISE to R.drawable.sunrise,
+                        Prayer.DHUHR to R.drawable.sunrise,
+                        Prayer.ASR to R.drawable.middle,
+                        Prayer.MAGHRIB to R.drawable.sunset,
+                        Prayer.ISHA to R.drawable.night
+                    )
+
+                    binding.image.setImageResource(prayerImageMap.getOrDefault(nextPrayer, R.drawable.night))
+
+
 
                     // Use coroutines to perform geocoding and countdown in the background
 
@@ -332,6 +349,7 @@ class Home : Fragment() {
             requestLocationPermission()
         }
         }
+//    ============= saved location ==============
     private fun savedLocation(){
         val preferences =
             requireActivity().getSharedPreferences("location_data", Context.MODE_PRIVATE)
@@ -403,6 +421,17 @@ class Home : Fragment() {
             val hijrahDate = HijrahDate.now()
             val formatterHijrah = DateTimeFormatter.ofPattern("d MMMM yyyy 'H'")
             val formattedHijriDate = hijrahDate.format(formatterHijrah)
+//            ========change main image ============
+            val prayerImageMap = mapOf(
+                Prayer.SUNRISE to R.drawable.sunrise,
+                Prayer.DHUHR to R.drawable.sunrise,
+                Prayer.ASR to R.drawable.middle,
+                Prayer.MAGHRIB to R.drawable.sunset,
+                Prayer.ISHA to R.drawable.night
+            )
+
+            binding.image.setImageResource(prayerImageMap.getOrDefault(nextPrayer, R.drawable.night))
+
 
             // Use coroutines to perform geocoding and countdown in the background
 
@@ -480,3 +509,4 @@ class Home : Fragment() {
         alertDialog.show()
     }
 }
+
