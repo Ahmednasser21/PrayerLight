@@ -15,7 +15,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"
         android:scaleType="fitXY"
-        android:src="@drawable/middle" />
+        android:src="@drawable/night" />
 
     <TextView
         android:id="@+id/next_pray_name"
@@ -27,7 +27,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
-        android:fontFamily="@font/cairo"
+        android:fontFamily="@font/cairo_bold"
         android:hint="@string/next_pray_name"
         android:textColorHint="@color/white"
         android:textColor="@color/white"

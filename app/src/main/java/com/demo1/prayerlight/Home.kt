@@ -193,9 +193,9 @@ class Home : Fragment() {
 
 //            ====== Implementing prayerTimes ========
                     val coordinates = Coordinates(latitude, longitude)
-                    val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-                    val month = Calendar.getInstance().get(Calendar.MONTH) + 1
-                    val year = Calendar.getInstance().get(Calendar.YEAR)
+                    var day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+                    var month = Calendar.getInstance().get(Calendar.MONTH) + 1
+                    var year = Calendar.getInstance().get(Calendar.YEAR)
                     var date = DateComponents(
                         year,
                         month,
@@ -235,8 +235,26 @@ class Home : Fragment() {
                         val currentDate = LocalDate.of(year, month, day)
                         val nextDay = currentDate.plusDays(1)
                         val nextDayFormatted = DateTimeFormatter.ofPattern("dd")
-                        val nextReformattedDay = nextDay.format(nextDayFormatted).toInt()
-                        date = DateComponents(year, month, nextReformattedDay)
+                        day = nextDay.format(nextDayFormatted).toInt()
+
+//                        val nextMonth = currentDate.plusMonths(1)
+//                        val nextMonthFormatted = DateTimeFormatter.ofPattern("MM")
+//                        val nextReformattedMonth = nextMonth.format(nextMonthFormatted).toInt()
+//
+//                        val nextYear = currentDate.plusYears(1)
+//                        val nextYearFormatted = DateTimeFormatter.ofPattern("YYYY")
+//                        val nextReformattedYear = nextYear.format(nextYearFormatted).toInt()
+
+                if (day == 1) {
+                    month += 1
+                    if (month == 1) {
+                        year += 1
+                    }
+                }
+                        date = DateComponents(year, month, day)
+//                        if (nextReformattedDay == 1) date = DateComponents(year, nextReformattedMonth, nextReformattedDay)
+//                        if (nextReformattedDay == 1 && nextReformattedMonth == 1) date =
+//                            DateComponents(nextReformattedYear, nextReformattedMonth, nextReformattedDay)
                         prayerTimes = PrayerTimes(coordinates, date, params)
                         nextPrayerTime = prayerTimes.timeForPrayer(nextPrayer)
                         fajrTimee = formatter.format(Date(prayerTimes.fajr.toEpochMilliseconds()))
@@ -318,7 +336,9 @@ class Home : Fragment() {
                             override fun onFinish() {
                                 binding.countdown.text = buildString {
                                     append(getString(R.string.its))
+                                    append(" ")
                                     append(nextPrayer)
+                                    append(" ")
                                     append(getString(R.string.time))
                                 }
                             }
@@ -359,9 +379,9 @@ class Home : Fragment() {
 
 //            ====== Implementing prayerTimes ========
             val coordinates = Coordinates(savedLatitude, savedLongitude)
-            val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-            val month = Calendar.getInstance().get(Calendar.MONTH) + 1
-            val year = Calendar.getInstance().get(Calendar.YEAR)
+            var day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            var month = Calendar.getInstance().get(Calendar.MONTH) + 1
+            var year = Calendar.getInstance().get(Calendar.YEAR)
             var date = DateComponents(
                 year,
                 month,
@@ -401,8 +421,26 @@ class Home : Fragment() {
                 val currentDate = LocalDate.of(year, month, day)
                 val nextDay = currentDate.plusDays(1)
                 val nextDayFormatted = DateTimeFormatter.ofPattern("dd")
-                val nextReformattedDay = nextDay.format(nextDayFormatted).toInt()
-                date = DateComponents(year, month, nextReformattedDay)
+                day = nextDay.format(nextDayFormatted).toInt()
+
+//                val nextMonth = currentDate.plusMonths(1)
+//                val nextMonthFormatted = DateTimeFormatter.ofPattern("MM")
+//                val nextReformattedMonth = nextMonth.format(nextMonthFormatted).toInt()
+//
+//                val nextYear = currentDate.plusYears(1)
+//                val nextYearFormatted = DateTimeFormatter.ofPattern("YYYY")
+//                val nextReformattedYear = nextYear.format(nextYearFormatted).toInt()
+                if (day == 1) {
+                    month += 1
+                    if (month == 1) {
+                        year += 1
+                    }
+                }
+
+                date = DateComponents(year, month, day)
+//                if (nextReformattedDay == 1) date = DateComponents(year, nextReformattedMonth, nextReformattedDay)
+//                if (nextReformattedDay == 1 && nextReformattedMonth == 1) date =
+//                    DateComponents(nextReformattedYear, nextReformattedMonth, nextReformattedDay)
                 prayerTimes = PrayerTimes(coordinates, date, params)
                 nextPrayerTime = prayerTimes.timeForPrayer(nextPrayer)
                 fajrTimee = formatter.format(Date(prayerTimes.fajr.toEpochMilliseconds()))
