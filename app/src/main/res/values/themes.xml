@@ -20,9 +20,8 @@
 <!--       ============== Action bar style ================-->
 
     <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="logo">@mipmap/round_icon__round</item>
-        <item name="android:icon">@mipmap/round_icon__round</item>
-        <item name="height">35dp</item>
+        <item name="logo">@drawable/icon</item>
+        <item name="height">36dp</item>
         <item name="displayOptions">useLogo|showHome|showTitle</item>
         <item name="background">@drawable/actionbar</item>
         <item name="titleTextStyle"> @style/MyActionBarTitleText</item>
@@ -31,7 +30,7 @@
 
 <!--    ============== Action bar  text style ================-->
     <style name="MyActionBarTitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 

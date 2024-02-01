@@ -15,7 +15,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"
         android:scaleType="fitXY"
-        android:src="@drawable/night" />
+        android:src="@drawable/man_riding_a_camel" />
 
     <TextView
         android:id="@+id/next_pray_name"
@@ -261,7 +261,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/eshaa"
-                    android:src="@drawable/ic_esha"
+                    android:src="@drawable/ic_eshaa"
                     android:layout_marginTop="28dp" />
 
             </LinearLayout>

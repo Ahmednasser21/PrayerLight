@@ -282,7 +282,7 @@ class Home : Fragment() {
                         Prayer.ISHA to R.drawable.night
                     )
 
-                    binding.image.setImageResource(prayerImageMap.getOrDefault(nextPrayer, R.drawable.night))
+                    binding.image.setImageResource(prayerImageMap.getOrDefault(nextPrayer, R.drawable.man_riding_a_camel))
 
 
 
@@ -468,7 +468,7 @@ class Home : Fragment() {
                 Prayer.ISHA to R.drawable.night
             )
 
-            binding.image.setImageResource(prayerImageMap.getOrDefault(nextPrayer, R.drawable.night))
+            binding.image.setImageResource(prayerImageMap.getOrDefault(nextPrayer, R.drawable.man_riding_a_camel))
 
 
             // Use coroutines to perform geocoding and countdown in the background
