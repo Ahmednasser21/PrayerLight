@@ -20,6 +20,7 @@
         android:background="@drawable/main_back2"
         app:itemIconTint="@color/second"
         app:itemTextColor="@color/second"
+        app:itemIconSize="36dp"
         app:labelVisibilityMode="auto"
         app:menu="@menu/bottom_nav_menu" />
 

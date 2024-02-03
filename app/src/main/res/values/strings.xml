@@ -17,10 +17,10 @@
     <string name="alarm_settings">Alarm Settings</string>
     <string name="fajr">Fajr</string>
     <string name="sun_rise">Sunrise</string>
-    <string name="zohr">dhuhr</string>
+    <string name="dhohr">Dhuhr</string>
     <string name="asr">Asr</string>
     <string name="maghrib">Maghrib</string>
-    <string name="eshaa">isha</string>
+    <string name="eshaa">Isha</string>
     <string name="quiam_lil">Quiam Lil</string>
     <string name="fajr_alarm">Enable or disable Fajr alarm</string>
     <string name="sunrise_alarm">Enable or disable Sunrise alarm</string>

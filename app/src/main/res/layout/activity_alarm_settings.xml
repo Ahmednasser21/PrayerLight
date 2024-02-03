@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:maxHeight="60dp"
                 android:layout_marginStart="10dp"
-                android:text="@string/zohr"
+                android:text="@string/dhohr"
                 android:fontFamily="@font/cairo"
                 android:contentDescription="@string/zohr_alarm"
                 android:textSize="30sp" />

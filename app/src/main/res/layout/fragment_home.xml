@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:maxHeight="55dp"
                     android:minHeight="53dp"
-                    android:text="@string/zohr"
+                    android:text="@string/dhohr"
                     android:textSize="30sp"
                     android:fontFamily="@font/cairo"
                     android:textColor="@color/black"
@@ -241,7 +241,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:contentDescription="@string/zohr"
+                    android:contentDescription="@string/dhohr"
                     android:src="@drawable/baseline_sunny_24"
                     android:layout_marginTop="20dp"/>
                 <ImageView
