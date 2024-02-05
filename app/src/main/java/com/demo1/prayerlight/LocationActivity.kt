@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.WindowCompat
 import com.demo1.prayerlight.databinding.ActivityLocationBinding
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
@@ -67,6 +68,7 @@ class LocationActivity : AppCompatActivity() {
                 Toast.makeText(this,getString(R.string.location_configuration_finished),Toast.LENGTH_SHORT).show()
             }
         }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
     }
 

@@ -3,6 +3,7 @@
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.demo1.prayerlight.databinding.ActivityAlarmSettingsBinding
 
  class AlarmSettings : AppCompatActivity() {
@@ -19,5 +20,6 @@ import com.demo1.prayerlight.databinding.ActivityAlarmSettingsBinding
              val intent = Intent(this, LocationActivity::class.java)
              startActivity(intent)
          }
+         WindowCompat.setDecorFitsSystemWindows(window, false)
      }
  }

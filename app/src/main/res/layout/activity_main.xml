@@ -17,10 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@drawable/main_back2"
+        android:background="@color/white"
         app:itemIconTint="@color/second"
         app:itemTextColor="@color/second"
-        app:itemIconSize="36dp"
+        app:itemIconSize="35dp"
         app:labelVisibilityMode="auto"
         app:menu="@menu/bottom_nav_menu" />
 
