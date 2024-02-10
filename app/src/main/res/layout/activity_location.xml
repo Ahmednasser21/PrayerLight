@@ -4,24 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main"
+    android:background="@drawable/background_main"
     tools:context=".LocationActivity">
-
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/app_name"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/settings2"/>
 
     <ImageView
         android:id="@+id/icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_below="@+id/image"
-        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="132dp"
         android:layout_marginEnd="6dp"
         android:layout_toStartOf="@+id/txt"
         android:contentDescription="@string/app_name"
@@ -34,9 +25,9 @@
         android:layout_height="wrap_content"
         android:maxHeight="70dp"
         android:minHeight="60dp"
-        android:layout_below="@+id/image"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="120dp"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:layout_marginEnd="89dp"
         android:fontFamily="@font/cairo_bold"
         android:text="@string/app_name"

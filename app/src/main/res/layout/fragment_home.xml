@@ -87,75 +87,84 @@
         android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:textSize="12sp" />
+
     <RelativeLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/location_text"
-        android:background="@drawable/main_back"
-        android:layout_marginTop="15dp">
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="-4dp"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/main_back">
+
         <TextView
             android:id="@+id/higri_calender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="225dp"
-            android:minWidth="200dp"
-            android:maxHeight="30dp"
-            android:minHeight="25dp"
             android:layout_marginStart="5dp"
             android:hint="@string/hijri_calender"
-            android:textSize="20sp"
-            android:textColor="@color/black"/>
+            android:maxWidth="225dp"
+            android:maxHeight="30dp"
+            android:minWidth="200dp"
+            android:minHeight="25dp"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/birth_calender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="280dp"
-            android:minWidth="200dp"
-            android:maxHeight="30dp"
-            android:minHeight="25dp"
             android:layout_below="@+id/higri_calender"
             android:layout_marginStart="5dp"
             android:hint="@string/birth_calender"
-            android:textSize="17sp"
-            android:textColor="#E6000000"/>
+            android:maxWidth="280dp"
+            android:maxHeight="30dp"
+            android:minWidth="200dp"
+            android:minHeight="25dp"
+            android:textColor="#E6000000"
+            android:textSize="17sp" />
+
         <TextView
             android:id="@+id/sunrise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="100dp"
-            android:minWidth="65dp"
-            android:maxHeight="30dp"
-            android:minHeight="25dp"
-            android:text="@string/sun_rise"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="15dp"
-            android:textSize="20sp"
-            android:textColor="@color/black" />
+            android:maxWidth="100dp"
+            android:maxHeight="30dp"
+            android:minWidth="65dp"
+            android:minHeight="25dp"
+            android:text="@string/sun_rise"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/sunrise_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="100dp"
-            android:minWidth="50dp"
-            android:maxHeight="35dp"
-            android:minHeight="30dp"
-            android:hint="@string/time"
-            android:layout_alignParentEnd="true"
             android:layout_below="@+id/sunrise"
+            android:layout_alignParentEnd="true"
             android:layout_marginEnd="5dp"
-            android:textSize="20sp"
-            android:textColor="@color/black" />
+            android:hint="@string/time"
+            android:maxWidth="100dp"
+            android:maxHeight="35dp"
+            android:minWidth="50dp"
+            android:minHeight="30dp"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:contentDescription="@string/sun_rise"
-            android:src="@drawable/ic_sunrise"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="110dp"
-            android:layout_centerVertical="true"/>
+            android:contentDescription="@string/sun_rise"
+            android:src="@drawable/ic_sunrise" />
     </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
