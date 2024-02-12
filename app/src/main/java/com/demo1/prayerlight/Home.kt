@@ -74,6 +74,7 @@ class Home : Fragment() {
 //  ======== save location info by shared preferences ========
         val preferences =
             requireActivity().getSharedPreferences("location_data", Context.MODE_PRIVATE)
+
         if (preferences.contains("latitude") && preferences.contains("longitude")) {
             savedLocation()
         }
@@ -82,7 +83,7 @@ class Home : Fragment() {
         }
 //        ============= update location using image ===========
 
-            binding.image.setOnClickListener {
+            binding.updateLocation.setOnClickListener {
                 if (checkLocationSetting() && internetConnection()) {
 
                     updateLocationDialog()
@@ -96,7 +97,14 @@ class Home : Fragment() {
                 }
             }
 
+       binding.login .setOnClickListener {
 
+            Toast.makeText(requireContext(), getString(R.string.login), Toast.LENGTH_SHORT).show()
+       }
+        binding.settings.setOnClickListener {
+
+            Toast.makeText(requireContext(), getString(R.string.settings), Toast.LENGTH_SHORT).show()
+        }
             return binding.root
         }
 // ============= request location permission =========
@@ -125,7 +133,7 @@ class Home : Fragment() {
     }
 //    =========== request location settings ================
     private fun requestLocationSettings(){
-        val locationRequest = LocationRequest.Builder(10).
+        val locationRequest = LocationRequest.Builder(0).
         setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY).build()
         val builder = LocationSettingsRequest.Builder()
             .addLocationRequest(locationRequest)
@@ -174,8 +182,8 @@ class Home : Fragment() {
 //    ===============new location =========
     private fun newLocation(){
             if (checkSelfPermission()) {
-            fusedLocationProviderClient.getCurrentLocation(
-                Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+                fusedLocationProviderClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
                 CancellationTokenSource().token
             )
                 .addOnSuccessListener { location ->

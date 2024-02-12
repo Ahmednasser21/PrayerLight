@@ -31,7 +31,7 @@
     <string name="quiam_lil_alarm">Enable or disable Quiam lil alarm</string>
     <string name="finish">Finish</string>
     <string name="settings">Settings</string>
-    <string name="signin">SignIn</string>
+    <string name="login">Login</string>
     <string name="next_pray_name">Next Pray Name</string>
     <string name="next_pray_time">Next Pray Time</string>
     <string name="countdown">Countdown</string>
@@ -55,6 +55,7 @@
     <string name="no_internet">No internet connection</string>
     <string name="check_internet">Please check internet connection and try again.</string>
     <string name="ok">OK</string>
+    <string name="update_location">Update location</string>
 
 
 </resources>

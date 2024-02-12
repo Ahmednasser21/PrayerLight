@@ -11,11 +11,43 @@
         android:layout_height="270dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:clickable="true"
         android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"
         android:scaleType="fitXY"
         android:src="@drawable/man_riding_a_camel" />
+
+    <ImageView
+        android:id="@+id/updateLocation"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@string/update_location"
+        android:src="@drawable/refresh_location" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/login"
+        android:name="com.demo1.prayerlight.login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/settings"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="25dp"
+        tools:layout="@layout/fragment_login" />
+
+    <ImageView
+        android:id="@+id/settings"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/setting_foreground"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp" />
 
     <TextView
         android:id="@+id/next_pray_name"
@@ -32,6 +64,7 @@
         android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:textSize="30sp" />
+
 
     <TextView
         android:id="@+id/next_pray_time"
