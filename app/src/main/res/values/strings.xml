@@ -56,6 +56,16 @@
     <string name="check_internet">Please check internet connection and try again.</string>
     <string name="ok">OK</string>
     <string name="update_location">Update location</string>
-
+    <string name="_7">7</string>
+    <string name="previous_month">previous month</string>
+    <string name="_30">30</string>
+    <string name="next_month">Next month</string>
+    <string name="hijri">Hijri</string>
+    <string name="gregorian">Gregorian</string>
+    <string name="separator">Separator</string>
+    <string-array name="spinner">
+        <item>Hijri</item>
+        <item>Gregorian</item>
+    </string-array>
 
 </resources>

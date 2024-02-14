@@ -1,14 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PrayerTimes">
-
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:gravity="center"/>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/statusbar"/>
+        <LinearLayout
+            android:id="@+id/outer_linear"
+            android:layout_width="match_parent"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:background="@drawable/text_back_second">
+            <ImageView
+                android:id="@+id/previos_month"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="5dp"
+                android:contentDescription="@string/previous_month"
+                android:src="@drawable/sharp_arrow_left_alt_24"
+                android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/days_7"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="@string/_7"
+                android:textSize="20sp"
+                android:layout_marginStart="15dp"
+                android:textColor="@color/golden"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/numbers_back"/>
 
-</RelativeLayout>
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:popupBackground="@drawable/spinner_background"
+                android:minHeight="48dp"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="50dp"
+                android:dropDownWidth="150dp"
+                android:backgroundTint="@color/golden"/>
+            <TextView
+                android:id="@+id/days_30"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="@string/_30"
+                android:textSize="20sp"
+                android:layout_marginEnd="15dp"
+                android:textColor="@color/golden"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/numbers_back"/>
+            <ImageView
+                android:id="@+id/next_month"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="5dp"
+                android:contentDescription="@string/next_month"
+                android:src="@drawable/sharp_arrow_right_alt_24"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>
