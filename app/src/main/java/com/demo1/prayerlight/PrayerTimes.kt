@@ -27,11 +27,11 @@ class PrayerTimes : Fragment() {
         binding = FragmentPrayerTimesBinding.inflate(inflater,container,false)
 //        ======= Gregorian date =============
         val dateGregorian = LocalDate.now()
-        val formatterGregorian = DateTimeFormatter.ofPattern("MMMM")
+        val formatterGregorian = DateTimeFormatter.ofPattern("MMMM yyyy")
         val formattedGregorianDate = dateGregorian.format(formatterGregorian)
 //         ========= Hijrah date ============
         val hijrahDate = HijrahDate.now()
-        val formatterHijrah = DateTimeFormatter.ofPattern("MMMM")
+        val formatterHijrah = DateTimeFormatter.ofPattern("MMMM yyyy 'H'")
         val formattedHijriDate = hijrahDate.format(formatterHijrah)
 //  ======== spinner handling ===========
         val spinner = binding.spinner

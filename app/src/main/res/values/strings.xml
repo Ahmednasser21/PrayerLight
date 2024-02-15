@@ -63,6 +63,7 @@
     <string name="hijri">Hijri</string>
     <string name="gregorian">Gregorian</string>
     <string name="separator">Separator</string>
+    <string name="day">Day</string>
     <string-array name="spinner">
         <item>Hijri</item>
         <item>Gregorian</item>

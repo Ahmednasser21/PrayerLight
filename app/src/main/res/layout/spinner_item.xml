@@ -6,7 +6,6 @@
     android:fontFamily="@font/cairo_bold"
     android:textColor="@color/golden"
     android:gravity="center"
-    android:textSize="18sp"
+    android:textSize="13sp"
     android:layout_centerInParent="true">
-
 </TextView>
