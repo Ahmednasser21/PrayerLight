@@ -10,4 +10,5 @@
     <color name="light_white">#E5FFFFFF</color>
     <color name="pressed">#5B7E85</color>
     <color name="golden">#BDC600</color>
+    <color name="gary">#C9C7C7</color>
 </resources>

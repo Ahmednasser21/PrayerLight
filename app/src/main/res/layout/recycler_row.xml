@@ -8,58 +8,87 @@
         android:orientation="horizontal">
         <TextView
             android:id="@+id/day"
-            android:layout_width="25dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/cairo_bold"
             android:gravity="center"
             android:textColor="@color/second"
-            android:textSize="15sp" />
+            android:textSize="11sp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/separator"
+            android:src="@drawable/calender_separator"/>
 
         <TextView
             android:id="@+id/fajr_time"
-            android:layout_width="70dp"
+            android:layout_width="63dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/cairo_bold"
             android:gravity="center"
             android:textColor="@color/second"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/separator"
+            android:src="@drawable/calender_separator"/>
 
         <TextView
             android:id="@+id/dhuhr_time"
-            android:layout_width="70dp"
+            android:layout_width="63dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/cairo_bold"
             android:gravity="center"
             android:textColor="@color/second"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/separator"
+            android:src="@drawable/calender_separator"/>
 
         <TextView
             android:id="@+id/asr_time"
-            android:layout_width="70dp"
+            android:layout_width="63dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/cairo_bold"
             android:gravity="center"
             android:textColor="@color/second"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/separator"
+            android:src="@drawable/calender_separator"/>
 
         <TextView
             android:id="@+id/maghrib_time"
-            android:layout_width="80dp"
+            android:layout_width="83dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/cairo_bold"
             android:gravity="center"
             android:textColor="@color/second"
-            android:textSize="21sp" />
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/separator"
+            android:src="@drawable/calender_separator"/>
 
         <TextView
             android:id="@+id/eshaa_time"
-            android:layout_width="70dp"
+            android:layout_width="63dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/cairo_bold"
             android:gravity="center"
             android:textColor="@color/second"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
