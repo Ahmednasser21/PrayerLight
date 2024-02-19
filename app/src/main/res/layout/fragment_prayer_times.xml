@@ -20,17 +20,20 @@
             android:layout_centerHorizontal="true"
             android:orientation="horizontal"
             android:background="@drawable/text_back_second">
+
             <ImageView
                 android:id="@+id/previos_month"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
                 android:layout_marginStart="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
                 android:contentDescription="@string/previous_month"
                 android:src="@drawable/sharp_arrow_left_alt_24"
-                android:layout_gravity="center"/>
+                tools:ignore="TouchTargetSizeCheck" />
             <TextView
                 android:id="@+id/days_7"
                 android:layout_width="40dp"
@@ -68,17 +71,20 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:background="@drawable/numbers_back"/>
+
             <ImageView
                 android:id="@+id/next_month"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginStart="5dp"
+                android:clickable="true"
                 android:contentDescription="@string/next_month"
                 android:src="@drawable/sharp_arrow_right_alt_24"
-                android:layout_gravity="center"/>
+                tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
     <LinearLayout

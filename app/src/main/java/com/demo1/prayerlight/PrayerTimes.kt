@@ -20,12 +20,12 @@ import com.batoulapps.adhan2.PrayerAdjustments
 import com.batoulapps.adhan2.PrayerTimes
 import com.batoulapps.adhan2.data.DateComponents
 import com.demo1.prayerlight.databinding.FragmentPrayerTimesBinding
+import com.demo1.prayerlight.databinding.RecyclerRowBinding
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -34,8 +34,37 @@ import java.util.TimeZone
 class PrayerTimes : Fragment() {
     private lateinit var binding: FragmentPrayerTimesBinding
     private var currentCalendar = "hijrah"
+    private var longitude:Double = 0.0
+    private var latitude:Double =0.0
+    private lateinit var coordinates:Coordinates
+   private val params = CalculationMethod.EGYPTIAN.parameters
+        .copy(
+            madhab = Madhab.SHAFI, prayerAdjustments =
+            PrayerAdjustments(dhuhr = -1)
+        )
+    private val hijrahDate = HijrahDate.now()
+    private val dateGregorian = LocalDate.now()
+    private val gregorianFormatter =DateTimeFormatter.ofPattern("MMMM yyyy")
+    private var day = dateGregorian.dayOfMonth
+    private var  month = dateGregorian.monthValue
+    private var year = dateGregorian.year
+    private var currentDate = LocalDate.of(year, month, day)
+    private val dayFormatter = DateTimeFormatter.ofPattern("dd")
+    private val monthFormatter = DateTimeFormatter.ofPattern("MM")
+    private val yearFormatter = DateTimeFormatter.ofPattern("yyyy")
+    private lateinit var textView: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        ========= getting longitude and latitude ========
+        val preferences = requireActivity().getSharedPreferences("location_data", Context.MODE_PRIVATE)
+
+        if (preferences.contains("latitude") && preferences.contains("longitude")) {
+            longitude = preferences.getFloat("longitude", 0f).toDouble()
+            latitude = preferences.getFloat("latitude", 0f).toDouble()
+        }
+        coordinates = Coordinates(latitude, longitude)
+
     }
 
     override fun onCreateView(
@@ -43,26 +72,17 @@ class PrayerTimes : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPrayerTimesBinding.inflate(inflater,container,false)
-//        ======= Gregorian date =============
-        val dateGregorian = LocalDate.now()
-        val formatterGregorian = DateTimeFormatter.ofPattern("MMMM yyyy")
-        val formattedGregorianDate = dateGregorian.format(formatterGregorian)
-//         ========= Hijrah date ============
-        val hijrahDate = HijrahDate.now()
-        val formatterHijrah = DateTimeFormatter.ofPattern("MMMM yyyy 'H'")
-        val formattedHijriDate = hijrahDate.format(formatterHijrah)
+        val spinner = binding.spinner
 
-//        ============= PrayerTimes list =================
-        var prayerTimesArray =ArrayList<PrayerTimesForArray>()
-
-        //  ======== spinner handling ===========
-
-//        =======================================================
+//        =======================Recycler view ================================
+        var prayerTimesArray = ArrayList<PrayerTimesForArray>()
         val recyclerView = binding.pTRecycler
         var recyclerAdapter = PrayerTimesAdapter(prayerTimesArray)
         recyclerView.adapter = recyclerAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
-        val spinner = binding.spinner
+
+//        ==========================Spinner======================
+
         ArrayAdapter.createFromResource(requireContext(),R.array.spinner,R.layout.spinner_item).
         also { adapter->
             adapter.setDropDownViewResource(R.layout.spinner_layout)
@@ -77,29 +97,30 @@ class PrayerTimes : Fragment() {
                 id: Long
             ) {
                 currentCalendar = if (position == 0) "hijrah" else "gregorian"
-                val textView = view as TextView
+//         ======= Gregorian date =============
+                val formattedGregorianDate = dateGregorian.format(gregorianFormatter)
+//         ========= Hijrah date ============
+                val formatterHijrah = DateTimeFormatter.ofPattern("MMMM yyyy 'H'")
+                val formattedHijriDate = hijrahDate.format(formatterHijrah)
+
+                 textView = view as TextView
 
                 when (position){
 
 
                     0-> {textView.text = formattedHijriDate
-                        prayerTimesArray = hijrahCalender()
                         // initialize the recyclerAdapter with the updated prayerTimesArray
+                        prayerTimesArray = hijrahCalender()
                         recyclerAdapter = PrayerTimesAdapter(prayerTimesArray)
-                        // set the recyclerAdapter to the recyclerView
                         recyclerView.adapter = recyclerAdapter
-                        // notify the adapter about the data change
                         recyclerAdapter.notifyDataSetChanged()
 
                     }
                     1-> {textView.text =formattedGregorianDate
-
-                        prayerTimesArray = gregorianCalender()
                         // initialize the recyclerAdapter with the updated prayerTimesArray
+                        prayerTimesArray = gregorianCalender()
                         recyclerAdapter = PrayerTimesAdapter(prayerTimesArray)
-                        // set the recyclerAdapter to the recyclerView
                         recyclerView.adapter = recyclerAdapter
-                        // notify the adapter about the data change
                         recyclerAdapter.notifyDataSetChanged()
 
                     }
@@ -111,18 +132,35 @@ class PrayerTimes : Fragment() {
             }
 
         }
+        binding.nextMonth.setOnClickListener {
+            currentDate = currentDate.plusMonths(1)
+            month = currentDate.monthValue
+            if (currentCalendar == "gregorian") {
+//                    hijrahCalender()
+//                } else {
+                textView.text = currentDate.format(gregorianFormatter)
+                val updatedPrayerTimesArray: ArrayList<PrayerTimesForArray> =
+                    gregorianCalender()
+//                }
 
-        // Handle month navigation buttons
-//        binding.previosMonth.setOnClickListener {
-//            currentMonth--
-//            getPrayerTimesForMonth(currentMonth)
-//            adapter.updateData(prayerTimes)
-//        }
-//        binding.nextMonth.setOnClickListener {
-//            currentMonth++
-//            getPrayerTimesForMonth(currentMonth)
-//            adapter.updateData(prayerTimes)
-//        }
+                // Update the RecyclerView adapter to display the new data
+                recyclerAdapter.updateData(updatedPrayerTimesArray)
+            }
+        }
+        binding.previosMonth.setOnClickListener {
+            currentDate = currentDate.minusMonths(1)
+            month = currentDate.monthValue
+            if (currentCalendar == "gregorian") {
+//                    hijrahCalender()
+//                } else {
+                textView.text = currentDate.format(gregorianFormatter)
+                val updatedPrayerTimesArray: ArrayList<PrayerTimesForArray> = gregorianCalender()
+//                }
+                // Update the RecyclerView adapter to display the new data
+                recyclerAdapter.updateData(updatedPrayerTimesArray)
+            }
+        }
+        
 //
 //        // Handle view mode buttons
 //        binding.days30.setOnClickListener {
@@ -140,28 +178,28 @@ class PrayerTimes : Fragment() {
 
         return binding.root
     }
-    inner class PrayerTimesAdapter(private val prayerTimes: List<PrayerTimesForArray>) :
+
+//    ==================Recycler View Adapter ==============
+    inner class PrayerTimesAdapter (private var prayerTimes: List<PrayerTimesForArray>) :
         RecyclerView.Adapter<PrayerTimesAdapter.ViewHolder>() {
-
-        private val currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        private val formatter = DateTimeFormatter.ofPattern("hh:mm")
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_row, parent, false)
-            return ViewHolder(view)
+            val binding = RecyclerRowBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+            return ViewHolder(binding)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val prayerTime = prayerTimes[position]
-            holder.bindData(prayerTime)
-            val hijrahDate = HijrahDate.now()
-            val dayFormatter = DateTimeFormatter.ofPattern("dd")
+
+            val prayerTimesPosition = prayerTimes[position]
+
+            holder.bindData(prayerTimesPosition)
+
             val dayForHolder = hijrahDate.format(dayFormatter).toInt()
 
 //             Highlight current day cell dynamically
 
-            if (prayerTime.day % 2 == 0) {
+            if (prayerTimesPosition.day % 2 == 0) {
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.gary))
             }
             else {
@@ -169,7 +207,7 @@ class PrayerTimes : Fragment() {
             }
 
             if (currentCalendar == "hijrah"){
-                if (prayerTime.day == dayForHolder ) {
+                if (prayerTimesPosition.day == dayForHolder ) {
                     holder.itemView.setBackgroundColor(
                         ContextCompat.getColor(
                             context!!,
@@ -186,7 +224,9 @@ class PrayerTimes : Fragment() {
 
             }
             else{
-            if (prayerTime.day == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+
+            if (prayerTimesPosition.day == day && year == currentDate.year
+                && month == dateGregorian.monthValue){
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.second))
                 holder.day.setTextColor(ContextCompat.getColor(context!!, R.color.golden))
                 holder.fajr.setTextColor(ContextCompat.getColor(context!!, R.color.golden))
@@ -199,15 +239,24 @@ class PrayerTimes : Fragment() {
             }
         }
 
-        override fun getItemCount(): Int = prayerTimes.size
 
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val day: TextView = itemView.findViewById(R.id.day)
-            val fajr: TextView = itemView.findViewById(R.id.fajr_time)
-            val dhuhr: TextView = itemView.findViewById(R.id.dhuhr_time)
-            val asr: TextView = itemView.findViewById(R.id.asr_time)
-            val maghrib: TextView = itemView.findViewById(R.id.maghrib_time)
-            val isha: TextView = itemView.findViewById(R.id.eshaa_time)
+//    =============view holder class ============
+        override fun getItemCount(): Int = prayerTimes.size
+        fun updateData(newPrayerTimes: List<PrayerTimesForArray>) {
+         // Update the adapter's internal data list
+          this.prayerTimes = newPrayerTimes
+
+         // Notify the adapter that the data has changed
+        notifyDataSetChanged()
+        }
+
+        inner class ViewHolder(binding: RecyclerRowBinding) : RecyclerView.ViewHolder(binding.root) {
+            val day = binding.day
+            val fajr = binding.fajrTime
+            val dhuhr = binding.dhuhrTime
+            val asr = binding.asrTime
+            val maghrib = binding.maghribTime
+            val isha = binding.eshaaTime
             fun bindData(prayerTime: PrayerTimesForArray) {
                 day.text = prayerTime.day.toString()
                 fajr.text = prayerTime.fajrTime
@@ -219,43 +268,31 @@ class PrayerTimes : Fragment() {
         }
     }
 
+
+//    ================= Gregorian calender ==============
     private fun gregorianCalender(): ArrayList<PrayerTimesForArray>{
-        val dateGregorian = LocalDate.now()
 
         val prayerTimesArray = ArrayList<PrayerTimesForArray>()
+
 //        ============= first and last day of the month ========
-        val dayFormatter = DateTimeFormatter.ofPattern("dd") // formatter
-        val firstDayOfMonthG = dateGregorian.with(TemporalAdjusters.firstDayOfMonth())
-        val formattedFirstDayOfMonthG = firstDayOfMonthG.format(dayFormatter).toInt()
+        val firstDayOfMonthG = LocalDate.of(year,month,1)
+        val formattedFirstDayOfMonthG = firstDayOfMonthG.dayOfMonth
 
         val lastDayOfMonthG = dateGregorian.with(TemporalAdjusters.lastDayOfMonth())
-        val formattedLastDayOfMonthG = lastDayOfMonthG.format(dayFormatter).toInt()
-//        ========= prayer times ==============
-        val preferences = requireActivity().getSharedPreferences("location_data", Context.MODE_PRIVATE)
-        val longitude:Double
-        val latitude:Double
-        if (preferences.contains("latitude") && preferences.contains("longitude")) {
-            longitude = preferences.getFloat("longitude", 0f).toDouble()
-            latitude = preferences.getFloat("latitude", 0f).toDouble()
+        val formattedLastDayOfMonthG = lastDayOfMonthG.dayOfMonth
 
-            val coordinates = Coordinates(latitude, longitude)
 
-            val month = Calendar.getInstance().get(Calendar.MONTH) + 1
-            val year = Calendar.getInstance().get(Calendar.YEAR)
 
-            val params = CalculationMethod.EGYPTIAN.parameters
-                .copy(
-                    madhab = Madhab.SHAFI, prayerAdjustments =
-                    PrayerAdjustments(dhuhr = -1)
-                )
-
-            for ( days in formattedFirstDayOfMonthG..formattedLastDayOfMonthG){
+        for ( days in formattedFirstDayOfMonthG..formattedLastDayOfMonthG){
+//           ======== prayer Times configration ==========
                 val date = DateComponents(year,
                     month,
                     days)
+
                 val prayerTimes = PrayerTimes(coordinates, date, params)
                 val formatter by lazy { SimpleDateFormat("hh:mm", Locale.getDefault()) }
                     .apply { TimeZone.getTimeZone("Africa/Cairo") }
+
                 val fajrTimee =
                     formatter.format(Date(prayerTimes.fajr.toEpochMilliseconds()))
                 val dhuhrTime =
@@ -269,20 +306,17 @@ class PrayerTimes : Fragment() {
                 val dayPrayers = PrayerTimesForArray(days,fajrTimee,dhuhrTime,asrTimee,maghribTimee,ishaTime)
                 prayerTimesArray.add(dayPrayers)
 
-            }
         }
+
         return prayerTimesArray
     }
 
     private fun hijrahCalender(): ArrayList<PrayerTimesForArray>{
-        val hijrahDate = HijrahDate.now()
 
         val prayerTimesArray = ArrayList<PrayerTimesForArray>()
+
 //        ============= first and last day of the month ========
-        val dayFormatter = DateTimeFormatter.ofPattern("dd")
-        val monthFormatter = DateTimeFormatter.ofPattern("MM")
-        val yearFormatter = DateTimeFormatter.ofPattern("yyyy")
-//        hijrah date
+
 
         val firstDayOfMonthH = hijrahDate.with(TemporalAdjusters.firstDayOfMonth())
         val formattedFirstDayOfMonthH = firstDayOfMonthH.format(dayFormatter).toInt()
@@ -291,25 +325,11 @@ class PrayerTimes : Fragment() {
         val formattedLastDayOfMonthH = lastDayOfMonthH.format(dayFormatter).toInt()
 
 //        ========= prayer times ==============
-        val preferences = requireActivity().getSharedPreferences("location_data", Context.MODE_PRIVATE)
-        val longitude:Double
-        val latitude:Double
-        if (preferences.contains("latitude") && preferences.contains("longitude")) {
-            longitude = preferences.getFloat("longitude", 0f).toDouble()
-            latitude = preferences.getFloat("latitude", 0f).toDouble()
+        val month = hijrahDate.format(monthFormatter).toInt()
+        val year = hijrahDate.format(yearFormatter).toInt()
 
-            val coordinates = Coordinates(latitude, longitude)
+        for ( days in formattedFirstDayOfMonthH..formattedLastDayOfMonthH){
 
-            val month = hijrahDate.format(monthFormatter).toInt()
-            val year = hijrahDate.format(yearFormatter).toInt()
-
-            val params = CalculationMethod.EGYPTIAN.parameters
-                .copy(
-                    madhab = Madhab.SHAFI, prayerAdjustments =
-                    PrayerAdjustments(dhuhr = -1)
-                )
-
-            for ( days in formattedFirstDayOfMonthH..formattedLastDayOfMonthH){
                 val hijriDate = HijrahDate.of(year, month, days)
                 // convert it to a Gregorian date
                 val gregorianDate = LocalDate.from(hijriDate)
@@ -317,6 +337,7 @@ class PrayerTimes : Fragment() {
                 val gregorianYear = gregorianDate.year
                 val gregorianMonth = gregorianDate.monthValue
                 val gregorianDay = gregorianDate.dayOfMonth
+
                 val date = DateComponents(gregorianYear, gregorianMonth, gregorianDay)
                 val prayerTimes = PrayerTimes(coordinates, date, params)
                 val formatter by lazy { SimpleDateFormat("hh:mm", Locale.getDefault()) }
@@ -333,8 +354,8 @@ class PrayerTimes : Fragment() {
                     formatter.format(Date(prayerTimes.isha.toEpochMilliseconds()))
                 val dayPrayers = PrayerTimesForArray(days,fajrTimee,dhuhrTime,asrTimee,maghribTimee,ishaTime)
                 prayerTimesArray.add(dayPrayers)
-            }
         }
+
         return prayerTimesArray
     }
 
