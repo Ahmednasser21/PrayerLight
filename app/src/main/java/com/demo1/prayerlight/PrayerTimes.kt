@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import java.util.Date
 import java.util.Locale
@@ -42,7 +43,7 @@ class PrayerTimes : Fragment() {
             madhab = Madhab.SHAFI, prayerAdjustments =
             PrayerAdjustments(dhuhr = -1)
         )
-    private val hijrahDate = HijrahDate.now()
+//    ========Gregorian date =============
     private val dateGregorian = LocalDate.now()
     private val gregorianFormatter =DateTimeFormatter.ofPattern("MMMM yyyy")
     private var day = dateGregorian.dayOfMonth
@@ -52,7 +53,13 @@ class PrayerTimes : Fragment() {
     private val dayFormatter = DateTimeFormatter.ofPattern("dd")
     private val monthFormatter = DateTimeFormatter.ofPattern("MM")
     private val yearFormatter = DateTimeFormatter.ofPattern("yyyy")
-    private lateinit var textView: TextView
+//    ======= hijrah date =========
+    private var hijrahDate = HijrahDate.now()
+    private val formatterHijrah = DateTimeFormatter.ofPattern("MMMM yyyy 'H'")
+
+
+
+    private lateinit var spinnerText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,15 +107,14 @@ class PrayerTimes : Fragment() {
 //         ======= Gregorian date =============
                 val formattedGregorianDate = dateGregorian.format(gregorianFormatter)
 //         ========= Hijrah date ============
-                val formatterHijrah = DateTimeFormatter.ofPattern("MMMM yyyy 'H'")
                 val formattedHijriDate = hijrahDate.format(formatterHijrah)
 
-                 textView = view as TextView
+                 spinnerText = view as TextView
 
                 when (position){
 
 
-                    0-> {textView.text = formattedHijriDate
+                    0-> { spinnerText.text = formattedHijriDate
                         // initialize the recyclerAdapter with the updated prayerTimesArray
                         prayerTimesArray = hijrahCalender()
                         recyclerAdapter = PrayerTimesAdapter(prayerTimesArray)
@@ -116,7 +122,7 @@ class PrayerTimes : Fragment() {
                         recyclerAdapter.notifyDataSetChanged()
 
                     }
-                    1-> {textView.text =formattedGregorianDate
+                    1-> { spinnerText.text =formattedGregorianDate
                         // initialize the recyclerAdapter with the updated prayerTimesArray
                         prayerTimesArray = gregorianCalender()
                         recyclerAdapter = PrayerTimesAdapter(prayerTimesArray)
@@ -133,33 +139,40 @@ class PrayerTimes : Fragment() {
 
         }
         binding.nextMonth.setOnClickListener {
-            currentDate = currentDate.plusMonths(1)
-            month = currentDate.monthValue
-            if (currentCalendar == "gregorian") {
-//                    hijrahCalender()
-//                } else {
-                textView.text = currentDate.format(gregorianFormatter)
-                val updatedPrayerTimesArray: ArrayList<PrayerTimesForArray> =
-                    gregorianCalender()
-//                }
+            val updatedPrayerTimesArray: ArrayList<PrayerTimesForArray> =
+                if (currentCalendar == "hijrah") {
+                    hijrahDate = hijrahDate.plus(1,ChronoUnit.MONTHS)
+                    spinnerText.text = hijrahDate.format(formatterHijrah)
+                    hijrahCalender()
 
+                } else {
+                    currentDate = currentDate.plusMonths(1)
+                    month = currentDate.monthValue
+                    spinnerText.text = currentDate.format(gregorianFormatter)
+                    gregorianCalender()
+                }
                 // Update the RecyclerView adapter to display the new data
                 recyclerAdapter.updateData(updatedPrayerTimesArray)
-            }
         }
+
         binding.previosMonth.setOnClickListener {
-            currentDate = currentDate.minusMonths(1)
-            month = currentDate.monthValue
-            if (currentCalendar == "gregorian") {
-//                    hijrahCalender()
-//                } else {
-                textView.text = currentDate.format(gregorianFormatter)
-                val updatedPrayerTimesArray: ArrayList<PrayerTimesForArray> = gregorianCalender()
-//                }
+
+            val updatedPrayerTimesArray: ArrayList<PrayerTimesForArray> =
+                if (currentCalendar == "hijrah") {
+                   hijrahDate = hijrahDate.minus(1,ChronoUnit.MONTHS)
+                    spinnerText.text = hijrahDate.format(formatterHijrah)
+                    hijrahCalender()
+
+                } else {
+                    currentDate = currentDate.minusMonths(1)
+                    month = currentDate.monthValue
+                    spinnerText.text = currentDate.format(gregorianFormatter)
+                    gregorianCalender()
+                }
                 // Update the RecyclerView adapter to display the new data
                 recyclerAdapter.updateData(updatedPrayerTimesArray)
             }
-        }
+
         
 //
 //        // Handle view mode buttons
@@ -196,6 +209,8 @@ class PrayerTimes : Fragment() {
             holder.bindData(prayerTimesPosition)
 
             val dayForHolder = hijrahDate.format(dayFormatter).toInt()
+            val monthHijreah = hijrahDate.format(monthFormatter)
+            val yearHijrah = hijrahDate.format(yearFormatter)
 
 //             Highlight current day cell dynamically
 
@@ -207,12 +222,11 @@ class PrayerTimes : Fragment() {
             }
 
             if (currentCalendar == "hijrah"){
-                if (prayerTimesPosition.day == dayForHolder ) {
+                if (prayerTimesPosition.day == dayForHolder
+                    && monthHijreah ==HijrahDate.now().format(monthFormatter)
+                    &&yearHijrah == HijrahDate.now().format(yearFormatter)) {
                     holder.itemView.setBackgroundColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.second
-                        )
+                        ContextCompat.getColor(context!!, R.color.second)
                     )
                     holder.day.setTextColor(ContextCompat.getColor(context!!, R.color.golden))
                     holder.fajr.setTextColor(ContextCompat.getColor(context!!, R.color.golden))
@@ -220,6 +234,14 @@ class PrayerTimes : Fragment() {
                     holder.asr.setTextColor(ContextCompat.getColor(context!!, R.color.golden))
                     holder.maghrib.setTextColor(ContextCompat.getColor(context!!, R.color.golden))
                     holder.isha.setTextColor(ContextCompat.getColor(context!!, R.color.golden))
+                }else{
+                    holder.day.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+                    holder.fajr.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+                    holder.dhuhr.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+                    holder.asr.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+                    holder.maghrib.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+                    holder.isha.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+
                 }
 
             }
@@ -234,6 +256,14 @@ class PrayerTimes : Fragment() {
                 holder.asr.setTextColor(ContextCompat.getColor(context!!, R.color.golden))
                 holder.maghrib.setTextColor(ContextCompat.getColor(context!!, R.color.golden))
                 holder.isha.setTextColor(ContextCompat.getColor(context!!, R.color.golden))
+            }else{
+                holder.day.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+                holder.fajr.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+                holder.dhuhr.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+                holder.asr.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+                holder.maghrib.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+                holder.isha.setTextColor(ContextCompat.getColor(context!!, R.color.second))
+
             }
 
             }
@@ -324,21 +354,22 @@ class PrayerTimes : Fragment() {
         val lastDayOfMonthH = hijrahDate.with(TemporalAdjusters.lastDayOfMonth())
         val formattedLastDayOfMonthH = lastDayOfMonthH.format(dayFormatter).toInt()
 
+        val monthHijrah = hijrahDate.format(monthFormatter).toInt()
+        val yearHijrah = hijrahDate.format(yearFormatter).toInt()
 //        ========= prayer times ==============
-        val month = hijrahDate.format(monthFormatter).toInt()
-        val year = hijrahDate.format(yearFormatter).toInt()
+
 
         for ( days in formattedFirstDayOfMonthH..formattedLastDayOfMonthH){
 
-                val hijriDate = HijrahDate.of(year, month, days)
+                val hijriDate = HijrahDate.of(yearHijrah, monthHijrah, days)
                 // convert it to a Gregorian date
                 val gregorianDate = LocalDate.from(hijriDate)
                 // get the Gregorian date components
-                val gregorianYear = gregorianDate.year
-                val gregorianMonth = gregorianDate.monthValue
-                val gregorianDay = gregorianDate.dayOfMonth
+                val gregorianYearFromHijrah = gregorianDate.year
+                val gregorianMonthFromHijrah = gregorianDate.monthValue
+                val gregorianDayFromHijrah = gregorianDate.dayOfMonth
 
-                val date = DateComponents(gregorianYear, gregorianMonth, gregorianDay)
+                val date = DateComponents(gregorianYearFromHijrah, gregorianMonthFromHijrah, gregorianDayFromHijrah)
                 val prayerTimes = PrayerTimes(coordinates, date, params)
                 val formatter by lazy { SimpleDateFormat("hh:mm", Locale.getDefault()) }
                     .apply { TimeZone.getTimeZone("Africa/Cairo") }
